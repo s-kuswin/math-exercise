@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    topicList:[],
+    resultList:[]
   },
 
   /**
@@ -13,7 +14,39 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
-    
+    this.oneRandomQuestion()
+  },
+
+  // 一年级随机题
+  oneRandomQuestion:function() {
+    var topicList = []
+    var resultList = []
+    for(var i = 0;i < 50;i++) {
+      var first = Math.round(Math.random()*100);
+      var symbol = ['+','-']
+      var second = symbol[Math.floor(Math.random()*symbol.length)];
+      var three
+      switch(second) {
+        case "+":{
+          three = Math.round(Math.random()*100);
+          resultList.push(first + three);
+          break;
+        }
+        case "-": {
+          three = Math.round(Math.random()*first);
+          resultList.push(first - three);
+          break;
+        }
+      }
+      var question = first + second + three + "=";
+      topicList.push(question);
+    }
+
+    // this.setData({
+    //   topicList:topicList,
+    //   resultList:resultList
+    // })
+    console.log(topicList,resultList);
   },
 
   /**
