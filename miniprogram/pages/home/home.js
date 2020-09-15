@@ -6,15 +6,18 @@ Page({
    */
   data: {
     topicList:[],
-    resultList:[]
+    resultList:[],
+    topicItem:'',
+    index:1,
+    items: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
     this.oneRandomQuestion()
+    this.randomRes(0)
   },
 
   // 一年级随机题
@@ -40,12 +43,15 @@ Page({
       }
       var question = first + second + three + "=";
       topicList.push(question);
+      this.setData({
+          topicItem:topicList[0],
+          index:1
+      })
     }
-
-    // this.setData({
-    //   topicList:topicList,
-    //   resultList:resultList
-    // })
+    this.setData({
+      topicList:topicList,
+      resultList:resultList
+    })
     console.log(topicList,resultList);
   },
 
@@ -61,16 +67,58 @@ Page({
    */
   onShow: function () {
     let num = 6
-    let t = setInterval(()=> {
+    let t = setInterval(nextTopic,1000)
+    let index = this.data.index
+    let topicList  = this.data.topicList
+    let _this = this
+    function nextTopic () {
       wx.setNavigationBarTitle({
         title: "倒计时 00:0"+ num
       })
-      if(!num) {
+      num--
+      if(num == -1) {
         clearInterval(t)
+        if(index < 50) {
+          index++
+          _this.setData({
+            topicItem:topicList[index - 1],
+            index:index
+          })
+          _this.randomRes(index-1)
+          num = 6
+          t = setInterval(nextTopic,1000)
+        }
       }
-      num-- 
-    },1000)
+    }
   },
+
+  randomRes:function(i) {
+    let item = []
+
+    let res = this.data.resultList[i]
+    item.push(res)
+    for(var j=0;j<3;j++) {
+      var number = Math.round(Math.random()*200);
+      item.push(number)
+    }
+    item = item.sort(function() {
+      return .5 - Math.random();
+    });
+    this.setData({
+      items:item
+    })
+  },
+
+  radioChange(e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+
+    const items = this.data.items
+    for (let i = 0, len = items.length; i < len; ++i) {
+      items[i].checked = items[i].value === e.detail.value
+    }
+  },
+
+
 
   /**
    * 生命周期函数--监听页面隐藏

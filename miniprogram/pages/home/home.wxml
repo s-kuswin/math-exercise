@@ -1,1 +1,21 @@
-<view></view>
+<view>
+  <view class="topic">
+    <view>第{{index}}题：  {{topicItem}}</view>
+  <!-- <view></view> -->
+  </view>
+  
+  <view>
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="radioChange">
+        <label class="weui-cell weui-check__label" wx:for="{{items}}" wx:for-item="item" wx:key="{{item.value}}">
+
+          <view class="weui-cell__hd">
+            <radio value="{{item}}"/>
+          </view>
+          <view class="weui-cell__bd">{{item}}</view>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+
+</view>
