@@ -19,7 +19,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.oneRandomQuestion()
+    switch(options.postId) {
+      case '0':{
+        this.oneRandomQuestion()
+        break;
+      }
+      case '1':{
+        this.twoRandomQuestion()
+        break;
+      }
+      case '2': {
+        this.threeRandomQuestion()
+        break;
+      }
+      case '3': {
+        this.fourRandomQuestion()
+        break;
+      }
+    }
+  },
+  // 四年级随机题
+  fourRandomQuestion: function() {
+
+  },
+  //三年级随机题
+  threeRandomQuestion: function() {
+
+  },
+
+  //二年级随机题
+  twoRandomQuestion: function() {
+
   },
 
   // 一年级随机题
@@ -50,6 +80,11 @@ Page({
       topicList:topicList,
       resultList:resultList
     })
+  },
+  //获取随机数
+  getRandomNum(min,max) {
+    var range = max - min
+    return (min + Math.round(Math.random * range))
   },
 
   /**
