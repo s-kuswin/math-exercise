@@ -1,0 +1,16 @@
+/* pages/grade/grade.wxss */
+.content {
+  height: 300px;
+  text-align: center;
+  padding: 100px 0;
+}
+.score {
+  font-size: 90rpx;
+  color: green;
+}
+
+.bestScore {
+  font-size: 30rpx;
+  color: lightseagreen;
+  margin-top: 20px;
+}

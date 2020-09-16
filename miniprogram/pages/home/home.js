@@ -1,6 +1,5 @@
 // miniprogram/pages/home.js
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -9,7 +8,11 @@ Page({
     resultList:[],
     topicItem:'',
     index:1,
-    items: []
+    items: [],
+    t:'',
+    num:6,
+    answerList:[],
+    score:0
   },
 
   /**
@@ -17,7 +20,6 @@ Page({
    */
   onLoad: function (options) {
     this.oneRandomQuestion()
-    this.randomRes(0)
   },
 
   // 一年级随机题
@@ -42,64 +44,68 @@ Page({
         }
       }
       var question = first + second + three + "=";
-      topicList.push(question);
-      this.setData({
-          topicItem:topicList[0],
-          index:1
-      })
+      topicList.push(question)
     }
     this.setData({
       topicList:topicList,
       resultList:resultList
     })
-    console.log(topicList,resultList);
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    let _this = this
+    this.randomRes(0)
+    this.setData({
+      topicItem:this.data.topicList[0],
+      index:1
+    })
+    this.setData({
+      t:setInterval(function(){_this.nextTopic(1)},1000)
+    })
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let num = 6
-    let t = setInterval(nextTopic,1000)
-    let index = this.data.index
+
+    
+  },
+
+  nextTopic:function (index) {
     let topicList  = this.data.topicList
-    let _this = this
-    function nextTopic () {
-      wx.setNavigationBarTitle({
-        title: "倒计时 00:0"+ num
-      })
-      num--
-      if(num == -1) {
-        clearInterval(t)
-        if(index < 50) {
-          index++
-          _this.setData({
-            topicItem:topicList[index - 1],
-            index:index
-          })
-          _this.randomRes(index-1)
-          num = 6
-          t = setInterval(nextTopic,1000)
-        }
-      }
+    let num = this.data.num
+    wx.setNavigationBarTitle({
+      title: "倒计时 00:0"+ num
+    })
+
+    num--
+    this.setData({
+      num : num
+    })
+    if(num == -1) {
+      clearInterval(this.data.t)
+      this.getAnswer()
     }
   },
 
   randomRes:function(i) {
     let item = []
-
-    let res = this.data.resultList[i]
+    let res = {
+      value: this.data.resultList[i],
+      checked:false
+    }
+    
     item.push(res)
     for(var j=0;j<3;j++) {
-      var number = Math.round(Math.random()*200);
-      item.push(number)
+      var it = {
+        value : Math.round(Math.random()*200),
+        checked :false
+      }
+      item.push(it)
     }
     item = item.sort(function() {
       return .5 - Math.random();
@@ -109,13 +115,58 @@ Page({
     })
   },
 
-  radioChange(e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
+  //获取答案列表
+  getAnswer(value) {
+    let index = this.data.index
+    let score = this.data.score
+    const resValue = this.data.resultList[index-1]
+    let answerList = this.data.answerList
+    let check = {
+      trueResult: resValue,
+      checkResult:value,
+      verdict:resValue==value
+    }
+    score = check.verdict? score+2:score
+    if(answerList.length === index && !answerList[index - 1].checkResult) answerList.pop()
+    answerList.length !== index?answerList.push(check):''
+    this.setData({
+      answerList:answerList,
+      score:score
+    })
+    
+    clearInterval(this.data.t)
+    
+    if(index >= 5) {
+      wx.navigateTo({
+        url: '../grade/grade?answerList='+ JSON.stringify(this.data.answerList) +'&score='+score,
+      })
+      return
+    }
+    this.setData({
+      num:6,
+    })
+    index++
+    let _this = this
+    // wx.setNavigationBarTitle({
+    //   title: "倒计时 00:0"+ 6
+    // })
+    this.randomRes(index-1)
+    this.setData({
+      topicItem:this.data.topicList[index - 1],
+      index:index
+    })
+    this.setData({
+      t:setInterval(function(){_this.nextTopic(index)},1000)
+    })
+  },
 
+  radioChange(e) {
     const items = this.data.items
+    
     for (let i = 0, len = items.length; i < len; ++i) {
       items[i].checked = items[i].value === e.detail.value
     }
+    this.getAnswer(e.detail.value)
   },
 
 
@@ -131,7 +182,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    clearInterval(this.data.t)
   },
 
   /**
