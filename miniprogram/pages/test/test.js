@@ -10,14 +10,11 @@ Page({
   },
 
   onTap: function (event) {
-    wx.navigateTo({
+    if(event.target.dataset.id !== undefined) {
+         wx.navigateTo({
         url:"../home/home?postId=" + event.target.dataset.id
     });
-    console.log(event)
-    // wx.switchTab({
-    //     url: "../posts/post"
-    // });
-  
+    }
 },
 
   /**

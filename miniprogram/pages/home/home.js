@@ -40,16 +40,368 @@ Page({
   },
   // 四年级随机题
   fourRandomQuestion: function() {
-
+    var topicList = []
+    var resultList = []
+    for(var i = 0;i < 50;i++) {
+      let several = this.getRandomNum(1,2)
+      var son_a = this.getRandomNum(1,10000);
+      var par_b = this.getRandomNum(1,10000);
+      var son_c = this.getRandomNum(1,10000);
+      var par_d = this.getRandomNum(1,10000);
+      switch(several) {
+        case 1:{
+          var A = this.count(son_a,par_b,4,100,10000,10000)
+          console.log(A);
+          
+          let arr = A.split('=')
+          topicList.push(arr[0])
+          resultList.push(arr[1])
+        }
+        case 2:{
+          var A = this.twoCount(son_a,par_b,son_c,par_d,4,100,10000,10000);
+          console.log(A);
+          let arr = A.split('=')
+          topicList.push(arr[0])
+          resultList.push(arr[1])
+        }
+      }      
+    }
+    this.setData({
+      topicList:topicList,
+      resultList:resultList
+    })
   },
   //三年级随机题
   threeRandomQuestion: function() {
+    var topicList = []
+    var resultList = []
+    for(var i = 0;i < 50;i++) {
+      let several = this.getRandomNum(1,4)
+      var son_a = this.getRandomNum(1,1000);
+      var par_b = this.getRandomNum(1,1000);
+      var son_c = this.getRandomNum(1,1000);
+      var par_d = this.getRandomNum(1,1000);
+      var A
+      switch(several) {
+        case 1:{
+          //一位运算
+          A = this.count(son_a,par_b,3,10,1000,1000);
+          break;
+        }
+        case 2:{
+          //混合运算
+          A = this.twoCount(son_a,par_b,son_c,par_d,3,10,1000,1000);
+          break;
+        }
+        case 3:{
+          //含有分数
+          // A = 
+        }
+        case 4:{
+          //含有小数
+
+        }
+      }
+      let arr = A.split('=')
+      topicList.push(arr[0])
+      resultList.push(arr[1])      
+    }
+    this.setData({
+      topicList:topicList,
+      resultList:resultList
+    })
 
   },
 
+
+
   //二年级随机题
   twoRandomQuestion: function() {
+    var topicList = []
+    var resultList = []
+    for(var i = 0;i < 50;i++) {
+      let several = this.getRandomNum(1,2)
+      var son_a = this.getRandomNum(1,100);
+      var par_b = this.getRandomNum(1,100);
+      var son_c = this.getRandomNum(1,100);
+      var par_d = this.getRandomNum(1,100);
+      switch(several) {
+        case 1:{
+          var A = this.count(son_a,par_b,2,10,10,100)
+          let arr = A.split('=')
+          topicList.push(arr[0])
+          resultList.push(arr[1])
+        }
+        case 2:{
+          var A = this.twoCount(son_a,par_b,son_c,par_d,2,10,10,100);
+          let arr = A.split('=')
+          topicList.push(arr[0])
+          resultList.push(arr[1])
+        }
+      }      
+    }
+    this.setData({
+      topicList:topicList,
+      resultList:resultList
+    })
+  },
 
+  //小数运算
+  decimalCount:function(level) {
+    var Arr = ['+','-','*','+-','++','--']
+    var shifting = [10,100,1000]
+    var a,b,n,sum,several
+    var m = this.getRandomNum(0,2)
+    var a = this.getRandomNum(0,100)
+    var sum = 0
+    if(level == 3)  {
+      n = this.getRandomNum(0,1)
+      several = 0
+    }
+
+    if(level = 4) {
+      n = this.getRandomNum(0,2)
+      several = this.getRandomNum(0,1)
+
+    }    
+    switch(Arr[n]){
+        case '+':{
+          b = this.getRandomNum(0,100)
+          sum = a+b
+          return `${a/shifting[m]}+${b/shifting[m]}=${sum/shifting[m]}`
+        }
+        case '-':{
+          b = this.getRandomNum(0,a)
+          sum = a-b
+          return `${a/shifting[m]}-${b/shifting[m]}=${sum/shifting[m]}`
+        }
+        case '+-':{
+          b = this.getRandomNum(0,100-a)
+          var c = this.getRandomNum(0,a+b)
+          sum = a+b-c
+          return `${a/shifting[m]}+${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
+
+        }
+        case '++':{
+          b = this.getRandomNum(0,100)
+          var c = this.getRandomNum(0,100)
+          sum = a+b+c
+          return `${a/shifting[m]}+${b/shifting[m]}+${c/shifting[m]}=${sum/shifting[m]}`
+
+        }
+        case '--':{
+          b = this.getRandomNum(0,a)
+          var c = this.getRandomNum(0,a-b)
+          sum = a-b-c
+          return `${a/shifting[m]}-${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
+        }
+        case '*':{
+          return `${a/shifting[m]}×${shifting[m]}=${a}`
+        }
+      }
+  },
+
+  //混合运算
+  twoCount:function(a,b,c,d,level,minBits,minBits2,maxBits) {
+    var Arr = ['+','-','*','/']
+
+    var n = this.getRandomNum(0,3)
+    var m = this.getRandomNum(0,3)
+    while(n>=2&&m>=2) {
+      n = this.getRandomNum(0,3)
+      m = this.getRandomNum(0,3)
+    }
+    const nm = `${n}${m}`
+    switch(nm) {
+      case '00':{
+        var sum = a+b+c
+        return `${a}+${b}+${c}=${sum}`
+      }
+      case '01':{
+        var sum = a+b-c
+        if(sum<0) {
+          var c = this.getRandomNum(1,a+b);
+          var sum=a+b-c;
+        }
+        return `${a}+${b}-${c}=${sum}`
+      }
+      case '02':{
+        var b = this.getRandomNum(1,minBits);
+        var c = this.getRandomNum(1,minBits2);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = a+ (b*c)
+        return `${a}+${b}×${c}=${sum}`
+      }
+      case '03':{
+        var b = this.getRandomNum(1,minBits);
+        var c = this.getRandomNum(1,minBits2);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = a+ (d/c)
+        return `${a}+${d}÷${c}=${sum}`
+      }
+      case '11':{
+        var sum = a-b-c
+        while(sum<0) {
+          var a = this.getRandomNum(c+b,maxBits);
+          var sum=a-b-c;
+        }
+        return `${a}-${b}-${c}=${sum}`
+      }
+      case '12':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var sum = a-(b*c)
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        if(sum<0) {
+          var a = this.getRandomNum(b*c,maxBits);
+          var sum=a-(b*c);
+        }
+        return `${a}-${b}×${c}=${sum}`
+      }
+      case '13':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = a-(d/c)
+ 
+        if(sum<0) {
+          var a = this.getRandomNum(d/c,maxBits);
+          var sum=a-(d/c);
+        }
+        return `${a}-${d}÷${c}=${sum}`
+      }
+      case '10':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = (d/c) - a
+        if(sum<0) {
+          var a = this.getRandomNum(1,d/c);
+          var sum=(d/c) - a;
+        }
+        return `${d}÷${c}-a=${sum}`
+      }
+      case '20':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = (b*c) + a
+        return `${b}×${c}+${a}=${sum}`
+      }
+      case '21':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = (b*c) - a
+        if(sum<0) {
+          var a = this.getRandomNum(1,b*c);
+          var sum=(b*c) - a;
+        }
+        return `${b}×${c}-${a}=${sum}`
+      }
+      case '30':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = (d/c) + a
+        return `${d}÷${c}+${a}=${sum}`
+      }
+      case '31':{
+        var b = this.getRandomNum(1,minBits2);
+        var c = this.getRandomNum(1,minBits);
+        var d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(1,minBits2);
+          c = this.getRandomNum(1,minBits);
+          d = b*c
+        }
+        var sum = (d/c) - a
+        if(sum<0) {
+          var a = this.getRandomNum(1,d/c);
+          var sum=(d/c) - a;
+        }
+        return `${d}÷${c}-${a}=${sum}`
+      }
+    }
+
+  },
+
+  count:function(a,b,level,minBits1,minBits2,maxBits) {
+    var Arr = ['+','-','*','/']
+    var n = this.getRandomNum(0,3)
+    switch(Arr[n]) {
+      case '+':{
+        var sum = a + b
+        return a +'+'+b +'='+sum;
+        break;
+      }
+      case '-':{
+        var sum = a-b
+        while(sum<0) {
+          var b = this.getRandomNum(1,a);
+          var sum=a-b;
+        }
+        return `${a}-${b}=${sum}`
+      }
+      case '*':{
+        var a = this.getRandomNum(1,minBits1);
+        var b = this.getRandomNum(1,minBits2);
+        var sum = a*b
+        return `${a}×${b}=${sum}`
+      }
+      case '/':{
+        var b = this.getRandomNum(1,minBits1);
+        var c = this.getRandomNum(1,minBits2);
+        a = b*c
+        while(a>maxBits) {
+          b = this.getRandomNum(1,minBits1);
+          c = this.getRandomNum(1,minBits2);
+          a = b*c
+        }
+        var sum = a/b
+        return `${a}÷${b}=${sum}`
+      }
+    }
   },
 
   // 一年级随机题
@@ -76,6 +428,8 @@ Page({
       var question = first + second + three + "=";
       topicList.push(question)
     }
+    console.log(topicList,resultList);
+    
     this.setData({
       topicList:topicList,
       resultList:resultList
@@ -83,8 +437,8 @@ Page({
   },
   //获取随机数
   getRandomNum(min,max) {
-    var range = max - min
-    return (min + Math.round(Math.random * range))
+    var range = max - min    
+    return (min + Math.round(Math.random() * range))
   },
 
   /**
@@ -133,11 +487,11 @@ Page({
       value: this.data.resultList[i],
       checked:false
     }
-    
     item.push(res)
+    var rand = Number(res.value) + 50
     for(var j=0;j<3;j++) {
       var it = {
-        value : Math.round(Math.random()*200),
+        value : Math.round(Math.random()*rand),
         checked :false
       }
       item.push(it)
@@ -172,7 +526,7 @@ Page({
     clearInterval(this.data.t)
     
     if(index >= 5) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '../grade/grade?answerList='+ JSON.stringify(this.data.answerList) +'&score='+score,
       })
       return
@@ -204,12 +558,12 @@ Page({
     this.getAnswer(e.detail.value)
   },
 
-
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
+    console.log('隐藏');
+    
 
   },
 
@@ -218,6 +572,8 @@ Page({
    */
   onUnload: function () {
     clearInterval(this.data.t)
+    console.log('卸载');
+    
   },
 
   /**
