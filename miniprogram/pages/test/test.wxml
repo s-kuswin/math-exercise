@@ -4,7 +4,7 @@
     <!-- <text class="btn-title">请选择年级</text> -->
     <view class="btn-container">
       <view class="btn" wx:for="{{classData}}" wx:for-item="item" wx:for-index="idx" data-id="{{item.postId}}" bindtap="onTap">
-        <text class="journey">{{item.title}}{{item.postId}}</text>
+        <text class="journey">{{item.title}}</text>
       </view>
     </view>
 </view>

@@ -12,7 +12,10 @@ Page({
     t:'',
     num:6,
     answerList:[],
-    score:0
+    score:0,
+    inputTypew:'digit',
+    inputValue:'',
+    defaultVal:''
   },
 
   /**
@@ -43,28 +46,31 @@ Page({
     var topicList = []
     var resultList = []
     for(var i = 0;i < 50;i++) {
-      let several = this.getRandomNum(1,2)
+      let several = this.getRandomNum(1,4)
       var son_a = this.getRandomNum(1,10000);
       var par_b = this.getRandomNum(1,10000);
       var son_c = this.getRandomNum(1,10000);
       var par_d = this.getRandomNum(1,10000);
+      var A
       switch(several) {
         case 1:{
-          var A = this.count(son_a,par_b,4,100,10000,10000)
-          console.log(A);
-          
-          let arr = A.split('=')
-          topicList.push(arr[0])
-          resultList.push(arr[1])
+          A = this.count(son_a,par_b,4,100,10000,10000)
         }
         case 2:{
-          var A = this.twoCount(son_a,par_b,son_c,par_d,4,100,10000,10000);
-          console.log(A);
-          let arr = A.split('=')
-          topicList.push(arr[0])
-          resultList.push(arr[1])
+          A = this.twoCount(son_a,par_b,son_c,par_d,4,100,10000,10000);
         }
-      }      
+        case 3:{
+          //含有分数
+          A = this.fractionCount()
+        }
+        case 4:{
+          //含有小数
+          A = this.decimalCount(4)
+        }
+      }     
+      let arr = A.split('=')
+      topicList.push(arr[0])
+      resultList.push(arr[1])     
     }
     this.setData({
       topicList:topicList,
@@ -95,11 +101,11 @@ Page({
         }
         case 3:{
           //含有分数
-          // A = 
+          A = this.fractionCount()
         }
         case 4:{
           //含有小数
-
+          A = this.decimalCount(3)
         }
       }
       let arr = A.split('=')
@@ -113,8 +119,6 @@ Page({
 
   },
 
-
-
   //二年级随机题
   twoRandomQuestion: function() {
     var topicList = []
@@ -125,20 +129,19 @@ Page({
       var par_b = this.getRandomNum(1,100);
       var son_c = this.getRandomNum(1,100);
       var par_d = this.getRandomNum(1,100);
+      var A
       switch(several) {
         case 1:{
-          var A = this.count(son_a,par_b,2,10,10,100)
-          let arr = A.split('=')
-          topicList.push(arr[0])
-          resultList.push(arr[1])
+          A = this.count(son_a,par_b,2,10,10,100);
+         
         }
         case 2:{
-          var A = this.twoCount(son_a,par_b,son_c,par_d,2,10,10,100);
-          let arr = A.split('=')
-          topicList.push(arr[0])
-          resultList.push(arr[1])
+          A = this.twoCount(son_a,par_b,son_c,par_d,2,10,10,100);
         }
-      }      
+      }
+      let arr = A.split('=')
+      topicList.push(arr[0])
+      resultList.push(arr[1])      
     }
     this.setData({
       topicList:topicList,
@@ -150,19 +153,16 @@ Page({
   decimalCount:function(level) {
     var Arr = ['+','-','*','+-','++','--']
     var shifting = [10,100,1000]
-    var a,b,n,sum,several
+    var a,b,n,sum
     var m = this.getRandomNum(0,2)
     var a = this.getRandomNum(0,100)
     var sum = 0
     if(level == 3)  {
       n = this.getRandomNum(0,1)
-      several = 0
     }
 
     if(level = 4) {
-      n = this.getRandomNum(0,2)
-      several = this.getRandomNum(0,1)
-
+      n = this.getRandomNum(0,5)
     }    
     switch(Arr[n]){
         case '+':{
@@ -199,6 +199,29 @@ Page({
           return `${a/shifting[m]}×${shifting[m]}=${a}`
         }
       }
+  },
+
+  // 分数运算
+  fractionCount:function() {
+    var a = this.getRandomNum(2,10)
+    var b = this.getRandomNum(1,a-1)
+    var c = this.getRandomNum(1,a-b)
+    var Arr = ['+','-']
+    var n = this.getRandomNum(0,1)
+    switch(Arr[n]) {
+      case '+':{
+        var sum = b+c
+        return `${b}/${a}+${c}/${a}=${sum}/${a}`
+      }
+      case '-':{
+        if(b<c) {
+          var d = c
+          c = b
+          b = d
+        }
+        return `${b}/${a}-${c}/${a}=${sum}/${a}`
+      }
+    }
   },
 
   //混合运算
@@ -446,9 +469,11 @@ Page({
    */
   onReady: function () {
     let _this = this
-    this.randomRes(0)
+    // this.randomRes(0)
+    var topic = this.data.topicList[0]
     this.setData({
-      topicItem:this.data.topicList[0],
+      inputTypew:topic.indexOf('/') !== -1?'text':'digit',
+      topicItem:topic,
       index:1
     })
     this.setData({
@@ -465,7 +490,6 @@ Page({
   },
 
   nextTopic:function (index) {
-    let topicList  = this.data.topicList
     let num = this.data.num
     wx.setNavigationBarTitle({
       title: "倒计时 00:0"+ num
@@ -477,7 +501,7 @@ Page({
     })
     if(num == -1) {
       clearInterval(this.data.t)
-      this.getAnswer()
+      this.getAnswer(this.data.inputValue)
     }
   },
 
@@ -520,7 +544,9 @@ Page({
     answerList.length !== index?answerList.push(check):''
     this.setData({
       answerList:answerList,
-      score:score
+      score:score,
+      inputValue:'',
+      defaultVal:''
     })
     
     clearInterval(this.data.t)
@@ -539,9 +565,11 @@ Page({
     // wx.setNavigationBarTitle({
     //   title: "倒计时 00:0"+ 6
     // })
-    this.randomRes(index-1)
+    // this.randomRes(index-1)
+    var topic = this.data.topicList[index - 1]
     this.setData({
-      topicItem:this.data.topicList[index - 1],
+      inputTypew:topic.indexOf('/') !== -1?'text':'digit',
+      topicItem:topic,
       index:index
     })
     this.setData({
@@ -556,6 +584,18 @@ Page({
       items[i].checked = items[i].value === e.detail.value
     }
     this.getAnswer(e.detail.value)
+  },
+
+  //input框輸入值获取
+  bindHideKeyboard(e) {
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+
+  //下一题
+  onButton() {
+    this.getAnswer(this.data.inputValue)
   },
 
   /**

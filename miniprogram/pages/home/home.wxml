@@ -6,16 +6,11 @@
   
   <view>
     <view class="weui-cells weui-cells_after-title">
-      <radio-group bindchange="radioChange">
-        <label class="weui-cell weui-check__label" wx:for="{{items}}" wx:for-item="item" wx:key="{{item.value}}">
-
-          <view class="weui-cell__hd">
-            <radio value="{{item.value}}" checked="{{item.check}}"/>
-          </view>
-          <view class="weui-cell__bd">{{item.value}}</view>
-        </label>
-      </radio-group>
+      <input class="weui-input" value="{{defaultVal}}" type="{{inputType}}" bindinput="bindHideKeyboard" bindconfirm="onButton" placeholder="请输入答案"/>
     </view>
   </view>
 
+  <view class="bottom">
+    <button  bindtap="onButton">下一题</button>
+  </view>
 </view>
