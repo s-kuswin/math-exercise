@@ -13,7 +13,7 @@ Page({
     num:6,
     answerList:[],
     score:0,
-    inputTypew:'digit',
+    inputType:'digit',
     inputValue:'',
     defaultVal:''
   },
@@ -77,6 +77,7 @@ Page({
       resultList:resultList
     })
   },
+
   //三年级随机题
   threeRandomQuestion: function() {
     var topicList = []
@@ -492,7 +493,7 @@ Page({
   nextTopic:function (index) {
     let num = this.data.num
     wx.setNavigationBarTitle({
-      title: "倒计时 00:0"+ num
+      title: index+'/'+'50题'+'  '+"00:0"+ num
     })
 
     num--
@@ -551,7 +552,7 @@ Page({
     
     clearInterval(this.data.t)
     
-    if(index >= 5) {
+    if(index >= 50) {
       wx.redirectTo({
         url: '../grade/grade?answerList='+ JSON.stringify(this.data.answerList) +'&score='+score,
       })
@@ -577,6 +578,7 @@ Page({
     })
   },
 
+  //随机选项点击，弃
   radioChange(e) {
     const items = this.data.items
     
@@ -586,16 +588,30 @@ Page({
     this.getAnswer(e.detail.value)
   },
 
-  //input框輸入值获取
-  bindHideKeyboard(e) {
-    this.setData({
-      inputValue: e.detail.value
-    })
-  },
 
-  //下一题
-  onButton() {
-    this.getAnswer(this.data.inputValue)
+  //按键输入
+  onButton(e) {
+    console.log(e.target.dataset.number);
+    
+    let value  = e.target.dataset.number
+    if(value ==undefined) return
+    let defaultVal = this.data.defaultVal
+    var numList = ['0','1','2','3','4','5','6','7','8','9','.','/']
+    if(numList.indexOf(value)) {
+      this.setData({
+        defaultVal: `${defaultVal}${value}`
+      })
+    }
+
+    if(value == 'x') {
+      this.setData({
+        defaultVal: defaultVal.substr(0,defaultVal.length-1)
+      })
+    }
+
+    if(value == 'next') {
+      this.getAnswer(this.data.inputValue)
+    }
   },
 
   /**

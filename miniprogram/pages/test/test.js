@@ -10,6 +10,8 @@ Page({
   },
 
   onTap: function (event) {
+    console.log(event.target.dataset.id,'id');
+    
     if(event.target.dataset.id !== undefined) {
          wx.navigateTo({
         url:"../home/home?postId=" + event.target.dataset.id

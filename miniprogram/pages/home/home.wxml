@@ -1,16 +1,70 @@
-<view>
+<view class="content">
   <view class="topic">
-    <view wx:if="{{topicItem}}">第{{index}}题：  {{topicItem}}</view>
+    <text wx:if="{{topicItem}}" class="text">{{topicItem}}<text class="valText">{{defaultVal}}</text></text>
   <!-- <view></view> -->
   </view>
-  
-  <view>
-    <view class="weui-cells weui-cells_after-title">
-      <input class="weui-input" value="{{defaultVal}}" type="{{inputType}}" bindinput="bindHideKeyboard" bindconfirm="onButton" placeholder="请输入答案"/>
+  <view class="keypad">
+    <view class="first">
+      <view class="col col-4">
+        <button type="default" class="defaultBtn" data-number="1" bindtap="onButton">1</button>
+      </view>
+      <view class="col col-4">
+        <button type="default" class="defaultBtn" data-number="2" bindtap="onButton">2</button>
+      </view>
+      <view class="col col-4">
+        <button type="default" class="defaultBtn" data-number="3" bindtap="onButton">3</button>
+      </view>
+      <view class="col col-4">
+        <button type="default" class="signBtn iconBtn" data-number="x" bindtap="onButton"><image src="../../images/del.svg"></image></button>
+      </view>
     </view>
-  </view>
 
-  <view class="bottom">
-    <button  bindtap="onButton">下一题</button>
+    <view class="second">
+        <view class="col col-4">
+          <button type="default" class="defaultBtn" data-number="4" bindtap="onButton">4</button>
+        </view>
+        <view class="col col-4">
+          <button type="default" class="defaultBtn" data-number="5" bindtap="onButton">5</button>
+        </view>
+        <view class="col col-4">
+          <button type="default" class="defaultBtn" data-number="6" bindtap="onButton">6</button>
+        </view>
+        <view class="col col-4">
+          <button type="default" class="signBtn" data-number="/" bindtap="onButton">/</button>
+        </view>
+    </view>
+    
+    <view class="merge">
+      <view class="left">
+        <view class="three">
+          <view class="col col-3">
+            <button type="default" class="defaultBtn" data-number="7" bindtap="onButton">7</button>
+          </view>
+          <view class="col col-3">
+            <button type="default" class="defaultBtn" data-number="8" bindtap="onButton">8</button>
+          </view>
+          <view class="col col-3">
+            <button type="default" class="defaultBtn" data-number="9" bindtap="onButton">9</button>
+          </view>
+        </view>
+
+        <view class="four">
+          <view class="col col-3">
+            <button type="default" class="signBtn" data-number="." bindtap="onButton">•</button>
+          </view>
+          <view class="col col-6">
+            <button type="default" class="defaultBtn" data-number="0" bindtap="onButton">0</button>
+          </view>
+        </view>
+      </view>
+  
+      <view class="right">
+        <button type="warn" data-number="next" bindtap="onButton">确认</button>
+      </view>
+    </view>
+
+
+
+
   </view>
 </view>
