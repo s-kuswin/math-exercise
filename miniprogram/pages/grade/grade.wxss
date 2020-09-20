@@ -9,6 +9,11 @@
   color: green;
 }
 
+.lowscore {
+  font-size: 90rpx;
+  color: red;
+}
+
 .bestScore {
   font-size: 30rpx;
   color: lightseagreen;

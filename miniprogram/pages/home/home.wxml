@@ -1,6 +1,6 @@
 <view class="content">
   <view class="topic">
-    <text wx:if="{{topicItem}}" class="text">{{topicItem}}<text class="valText">{{defaultVal}}</text></text>
+    <text wx:if="{{topicItem}}" class="text">{{topicItem}} = <text class="valText">{{defaultVal}}</text></text>
   <!-- <view></view> -->
   </view>
   <view class="keypad">
@@ -15,7 +15,7 @@
         <button type="default" class="defaultBtn" data-number="3" bindtap="onButton">3</button>
       </view>
       <view class="col col-4">
-        <button type="default" class="signBtn iconBtn" data-number="x" bindtap="onButton"><image src="../../images/del.svg"></image></button>
+        <button type="default" class="signBtn iconBtn" data-number="x" bindtap="onButton"><image data-number="x" src="../../images/del.svg"></image></button>
       </view>
     </view>
 

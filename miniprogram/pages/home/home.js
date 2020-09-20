@@ -52,20 +52,26 @@ Page({
       var son_c = this.getRandomNum(1,10000);
       var par_d = this.getRandomNum(1,10000);
       var A
+      // console.log(several);
+      
       switch(several) {
         case 1:{
           A = this.count(son_a,par_b,4,100,10000,10000)
+          break;
         }
         case 2:{
           A = this.twoCount(son_a,par_b,son_c,par_d,4,100,10000,10000);
+          break;
         }
         case 3:{
           //含有分数
           A = this.fractionCount()
+          break;
         }
         case 4:{
           //含有小数
           A = this.decimalCount(4)
+          break;
         }
       }     
       let arr = A.split('=')
@@ -103,10 +109,12 @@ Page({
         case 3:{
           //含有分数
           A = this.fractionCount()
+          break;
         }
         case 4:{
           //含有小数
           A = this.decimalCount(3)
+          break;
         }
       }
       let arr = A.split('=')
@@ -134,12 +142,13 @@ Page({
       switch(several) {
         case 1:{
           A = this.count(son_a,par_b,2,10,10,100);
-         
+          break;
         }
         case 2:{
           A = this.twoCount(son_a,par_b,son_c,par_d,2,10,10,100);
+          break;
         }
-      }
+      }      
       let arr = A.split('=')
       topicList.push(arr[0])
       resultList.push(arr[1])      
@@ -170,34 +179,38 @@ Page({
           b = this.getRandomNum(0,100)
           sum = a+b
           return `${a/shifting[m]}+${b/shifting[m]}=${sum/shifting[m]}`
+          break;
         }
         case '-':{
           b = this.getRandomNum(0,a)
           sum = a-b
           return `${a/shifting[m]}-${b/shifting[m]}=${sum/shifting[m]}`
+          break;
         }
         case '+-':{
           b = this.getRandomNum(0,100-a)
           var c = this.getRandomNum(0,a+b)
           sum = a+b-c
           return `${a/shifting[m]}+${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
-
+          break;
         }
         case '++':{
           b = this.getRandomNum(0,100)
           var c = this.getRandomNum(0,100)
           sum = a+b+c
           return `${a/shifting[m]}+${b/shifting[m]}+${c/shifting[m]}=${sum/shifting[m]}`
-
+          break;
         }
         case '--':{
           b = this.getRandomNum(0,a)
           var c = this.getRandomNum(0,a-b)
           sum = a-b-c
           return `${a/shifting[m]}-${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
+          break;
         }
         case '*':{
           return `${a/shifting[m]}×${shifting[m]}=${a}`
+          break;
         }
       }
   },
@@ -213,6 +226,7 @@ Page({
       case '+':{
         var sum = b+c
         return `${b}/${a}+${c}/${a}=${sum}/${a}`
+        break;
       }
       case '-':{
         if(b<c) {
@@ -220,7 +234,9 @@ Page({
           c = b
           b = d
         }
+        var sum = b-c
         return `${b}/${a}-${c}/${a}=${sum}/${a}`
+        break;
       }
     }
   },
@@ -240,6 +256,7 @@ Page({
       case '00':{
         var sum = a+b+c
         return `${a}+${b}+${c}=${sum}`
+        break;
       }
       case '01':{
         var sum = a+b-c
@@ -248,6 +265,7 @@ Page({
           var sum=a+b-c;
         }
         return `${a}+${b}-${c}=${sum}`
+        break;
       }
       case '02':{
         var b = this.getRandomNum(1,minBits);
@@ -260,6 +278,7 @@ Page({
         }
         var sum = a+ (b*c)
         return `${a}+${b}×${c}=${sum}`
+        break;
       }
       case '03':{
         var b = this.getRandomNum(1,minBits);
@@ -272,6 +291,7 @@ Page({
         }
         var sum = a+ (d/c)
         return `${a}+${d}÷${c}=${sum}`
+        break;
       }
       case '11':{
         var sum = a-b-c
@@ -280,6 +300,7 @@ Page({
           var sum=a-b-c;
         }
         return `${a}-${b}-${c}=${sum}`
+        break;
       }
       case '12':{
         var b = this.getRandomNum(1,minBits2);
@@ -296,6 +317,7 @@ Page({
           var sum=a-(b*c);
         }
         return `${a}-${b}×${c}=${sum}`
+        break;
       }
       case '13':{
         var b = this.getRandomNum(1,minBits2);
@@ -313,22 +335,16 @@ Page({
           var sum=a-(d/c);
         }
         return `${a}-${d}÷${c}=${sum}`
+        break;
       }
       case '10':{
-        var b = this.getRandomNum(1,minBits2);
-        var c = this.getRandomNum(1,minBits);
-        var d = b*c
-        while(d>maxBits) {
-          b = this.getRandomNum(1,minBits2);
-          c = this.getRandomNum(1,minBits);
-          d = b*c
-        }
-        var sum = (d/c) - a
+        var sum = a-c+b
         if(sum<0) {
-          var a = this.getRandomNum(1,d/c);
-          var sum=(d/c) - a;
+          var c = this.getRandomNum(1,a+b);
+          var sum=a-c+b;
         }
-        return `${d}÷${c}-a=${sum}`
+        return `${a}-${c}+${b}=${sum}`;
+        break;
       }
       case '20':{
         var b = this.getRandomNum(1,minBits2);
@@ -341,6 +357,7 @@ Page({
         }
         var sum = (b*c) + a
         return `${b}×${c}+${a}=${sum}`
+        break;
       }
       case '21':{
         var b = this.getRandomNum(1,minBits2);
@@ -355,8 +372,9 @@ Page({
         if(sum<0) {
           var a = this.getRandomNum(1,b*c);
           var sum=(b*c) - a;
-        }
+        }        
         return `${b}×${c}-${a}=${sum}`
+        break;
       }
       case '30':{
         var b = this.getRandomNum(1,minBits2);
@@ -374,6 +392,8 @@ Page({
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
+        console.log(a);
+        
         while(d>maxBits) {
           b = this.getRandomNum(1,minBits2);
           c = this.getRandomNum(1,minBits);
@@ -385,6 +405,7 @@ Page({
           var sum=(d/c) - a;
         }
         return `${d}÷${c}-${a}=${sum}`
+        break;
       }
     }
 
@@ -406,12 +427,14 @@ Page({
           var sum=a-b;
         }
         return `${a}-${b}=${sum}`
+        break;
       }
       case '*':{
         var a = this.getRandomNum(1,minBits1);
         var b = this.getRandomNum(1,minBits2);
         var sum = a*b
         return `${a}×${b}=${sum}`
+        break;
       }
       case '/':{
         var b = this.getRandomNum(1,minBits1);
@@ -424,6 +447,7 @@ Page({
         }
         var sum = a/b
         return `${a}÷${b}=${sum}`
+        break;
       }
     }
   },
@@ -449,11 +473,9 @@ Page({
           break;
         }
       }
-      var question = first + second + three + "=";
+      var question = first + second + three;
       topicList.push(question)
     }
-    console.log(topicList,resultList);
-    
     this.setData({
       topicList:topicList,
       resultList:resultList
@@ -477,6 +499,7 @@ Page({
       topicItem:topic,
       index:1
     })
+    this.nextTopic(1)
     this.setData({
       t:setInterval(function(){_this.nextTopic(1)},1000)
     })
@@ -502,7 +525,7 @@ Page({
     })
     if(num == -1) {
       clearInterval(this.data.t)
-      this.getAnswer(this.data.inputValue)
+      this.getAnswer(this.data.defaultVal)
     }
   },
 
@@ -573,6 +596,7 @@ Page({
       topicItem:topic,
       index:index
     })
+    this.nextTopic(index)
     this.setData({
       t:setInterval(function(){_this.nextTopic(index)},1000)
     })
@@ -591,17 +615,16 @@ Page({
 
   //按键输入
   onButton(e) {
-    console.log(e.target.dataset.number);
-    
     let value  = e.target.dataset.number
+    console.log(value);
     if(value ==undefined) return
     let defaultVal = this.data.defaultVal
     var numList = ['0','1','2','3','4','5','6','7','8','9','.','/']
-    if(numList.indexOf(value)) {
+    if(numList.indexOf(value) !== -1) {
       this.setData({
         defaultVal: `${defaultVal}${value}`
       })
-    }
+    }  
 
     if(value == 'x') {
       this.setData({
@@ -610,7 +633,7 @@ Page({
     }
 
     if(value == 'next') {
-      this.getAnswer(this.data.inputValue)
+      this.getAnswer(this.data.defaultVal)
     }
   },
 

@@ -14,13 +14,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options,JSON.parse(options.answerList));
     this.setData({
       score:options.score,
-      list:JSON.parse(options.answerList)
+      list:JSON.parse(options.answerList),
+      scoreClass: options.score>6?'score':'lowscore'
     })
     let bestScore = wx.getStorageSync('bestScore')
-    console.log(bestScore,'bestScore');
     
     
     (bestScore&&bestScore < this.data.score) || !bestScore?wx.setStorageSync('bestScore', options.score):''
