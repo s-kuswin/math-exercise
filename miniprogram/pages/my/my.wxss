@@ -1,0 +1,71 @@
+/* pages/my/my.wxss */
+page{
+  height: 100%;
+  /* background-color:#b3d4db; */
+  /* background-color: #fff; */
+}
+
+.myInformation {
+  background: #fff;
+  padding:20px;
+  text-align: center;
+}
+.myInformation image {
+  width: 30px;
+  height: 30px;
+
+  /* border:1px solid; */
+ }
+
+.myImage {
+  margin: 10px auto;
+  width: 50px;
+  /* padding: 10px; */
+  border-radius: 50%;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.col {
+  float: left;
+}
+.col-3 {
+  width: 33.333333333%;
+  overflow: hidden;
+}
+.number {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size:50rpx;
+}
+
+.text {
+  text-align: center;
+  font-size: 30rpx;
+  color: #8a8a8a;
+}
+
+.list {
+  margin: 20px 10px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.list-item {
+  padding: 15px;
+  overflow: hidden;
+}
+
+.list-right {
+  width: 20px;
+  height: 20px;
+  float:right;
+}
+
+.list-left {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 5px;
+}

@@ -1,0 +1,31 @@
+<view class="contenr">
+  <view class="myInformation">
+    <view class="myImage">
+      <open-data type="userAvatarUrl"></open-data>
+      <!-- <image src="../../images/person.png"></image> -->
+    </view>
+    <view class="col-box">
+      <view class="col col-3">
+        <view class="number">3</view>
+        <view class="text">累计训练天数</view>
+      </view>
+      <view class="col col-3">
+        <view class="number">3</view>
+        <view class="text">历史最高成绩</view>
+      </view>
+      <view class="col-3">
+        <view class="number">3</view>
+        <view class="text">练习试卷数量</view>
+      </view>
+    </view>
+    
+  </view>
+
+  <view class="list">
+    <view class="list-item">
+      <image src="../../images/lishi.png" class="list-left"></image>
+      <text class="list-text">历史记录</text>
+      <image src="../../images/right.png" class="list-right"></image>
+    </view>
+  </view>
+</view>
