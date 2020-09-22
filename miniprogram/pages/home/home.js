@@ -1,20 +1,18 @@
 // miniprogram/pages/home.js
+let num = 6 //计时几秒
+let t ='' //延时器
+let topicList = [] //问题列表
+let resultList = [] //答案列表
+let answerList = [] //回答的结果列表
+let score = 0 //分数
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    topicList:[],
-    resultList:[],
     topicItem:'',
     index:1,
-    items: [],
-    t:'',
-    num:6,
-    answerList:[],
-    score:0,
-    inputType:'digit',
-    inputValue:'',
+    // items: [],
     defaultVal:''
   },
 
@@ -43,8 +41,8 @@ Page({
   },
   // 四年级随机题
   fourRandomQuestion: function() {
-    var topicList = []
-    var resultList = []
+    topicList = []
+    resultList = []
     for(var i = 0;i < 50;i++) {
       let several = this.getRandomNum(1,4)
       var son_a = this.getRandomNum(1,10000);
@@ -78,16 +76,12 @@ Page({
       topicList.push(arr[0])
       resultList.push(arr[1])     
     }
-    this.setData({
-      topicList:topicList,
-      resultList:resultList
-    })
   },
 
   //三年级随机题
   threeRandomQuestion: function() {
-    var topicList = []
-    var resultList = []
+    topicList = []
+    resultList = []
     for(var i = 0;i < 50;i++) {
       let several = this.getRandomNum(1,4)
       var son_a = this.getRandomNum(1,1000);
@@ -121,17 +115,12 @@ Page({
       topicList.push(arr[0])
       resultList.push(arr[1])      
     }
-    this.setData({
-      topicList:topicList,
-      resultList:resultList
-    })
-
   },
 
   //二年级随机题
   twoRandomQuestion: function() {
-    var topicList = []
-    var resultList = []
+    topicList = []
+    resultList = []
     for(var i = 0;i < 50;i++) {
       let several = this.getRandomNum(1,2)
       var son_a = this.getRandomNum(1,100);
@@ -153,10 +142,6 @@ Page({
       topicList.push(arr[0])
       resultList.push(arr[1])      
     }
-    this.setData({
-      topicList:topicList,
-      resultList:resultList
-    })
   },
 
   //小数运算
@@ -454,8 +439,8 @@ Page({
 
   // 一年级随机题
   oneRandomQuestion:function() {
-    var topicList = []
-    var resultList = []
+    topicList = []
+    resultList = []
     for(var i = 0;i < 50;i++) {
       var first = Math.round(Math.random()*100);
       var symbol = ['+','-']
@@ -476,10 +461,6 @@ Page({
       var question = first + second + three;
       topicList.push(question)
     }
-    this.setData({
-      topicList:topicList,
-      resultList:resultList
-    })
   },
   //获取随机数
   getRandomNum(min,max) {
@@ -493,9 +474,8 @@ Page({
   onReady: function () {
     let _this = this
     // this.randomRes(0)
-    var topic = this.data.topicList[0]
+    var topic = topicList[0]
     this.setData({
-      inputTypew:topic.indexOf('/') !== -1?'text':'digit',
       topicItem:topic,
       index:1
     })
@@ -529,35 +509,35 @@ Page({
     }
   },
 
-  randomRes:function(i) {
-    let item = []
-    let res = {
-      value: this.data.resultList[i],
-      checked:false
-    }
-    item.push(res)
-    var rand = Number(res.value) + 50
-    for(var j=0;j<3;j++) {
-      var it = {
-        value : Math.round(Math.random()*rand),
-        checked :false
-      }
-      item.push(it)
-    }
-    item = item.sort(function() {
-      return .5 - Math.random();
-    });
-    this.setData({
-      items:item
-    })
-  },
+  // randomRes:function(i) {
+  //   let item = []
+  //   let res = {
+  //     value: resultList[i],
+  //     checked:false
+  //   }
+  //   item.push(res)
+  //   var rand = Number(res.value) + 50
+  //   for(var j=0;j<3;j++) {
+  //     var it = {
+  //       value : Math.round(Math.random()*rand),
+  //       checked :false
+  //     }
+  //     item.push(it)
+  //   }
+  //   item = item.sort(function() {
+  //     return .5 - Math.random();
+  //   });
+  //   this.setData({
+  //     items:item
+  //   })
+  // },
 
   //获取答案列表
   getAnswer(value) {
     let index = this.data.index
-    let score = this.data.score
-    const resValue = this.data.resultList[index-1]
-    let answerList = this.data.answerList
+    let score = score
+    const resValue = resultList[index-1]
+    let answerList = answerList
     let check = {
       trueResult: resValue,
       checkResult:value,
@@ -577,7 +557,7 @@ Page({
     
     if(index >= 50) {
       wx.redirectTo({
-        url: '../grade/grade?answerList='+ JSON.stringify(this.data.answerList) +'&score='+score,
+        url: '../grade/grade?answerList='+ JSON.stringify(answerList) +'&score='+score,
       })
       return
     }
@@ -590,9 +570,8 @@ Page({
     //   title: "倒计时 00:0"+ 6
     // })
     // this.randomRes(index-1)
-    var topic = this.data.topicList[index - 1]
+    var topic = topicList[index - 1]
     this.setData({
-      inputTypew:topic.indexOf('/') !== -1?'text':'digit',
       topicItem:topic,
       index:index
     })
@@ -602,15 +581,15 @@ Page({
     })
   },
 
-  //随机选项点击，弃
-  radioChange(e) {
-    const items = this.data.items
+  // //随机选项点击，弃
+  // radioChange(e) {
+  //   const items = this.data.items
     
-    for (let i = 0, len = items.length; i < len; ++i) {
-      items[i].checked = items[i].value === e.detail.value
-    }
-    this.getAnswer(e.detail.value)
-  },
+  //   for (let i = 0, len = items.length; i < len; ++i) {
+  //     items[i].checked = items[i].value === e.detail.value
+  //   }
+  //   this.getAnswer(e.detail.value)
+  // },
 
 
   //按键输入
