@@ -14,16 +14,50 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var score = options.score
+    var postId = options.postId
     this.setData({
-      score:options.score,
+      score:score,
       list:JSON.parse(options.answerList),
-      scoreClass: options.score>6?'score':'lowscore'
+      scoreClass: score>60?'score':'lowscore'
     })
     let bestScore = wx.getStorageSync('bestScore')
     
     
-    (bestScore&&bestScore < this.data.score) || !bestScore?wx.setStorageSync('bestScore', options.score):''
+    (bestScore&&bestScore < this.data.score) || !bestScore?wx.setStorageSync('bestScore', score):''
     bestScore?this.setData({bestScore:bestScore}):''
+    var list = wx.getStorageSync('list') || []
+    list.unshife({
+      name: postId ==0?'一年级': postId ==1?'二年级':postId ==2?'三年级': postId ==3?'四年级':'',
+      score:score,
+      stage:options.stage ==1?'初级': options.stage ==2?'中级': options.stage ==3?'高级':''
+    })
+    //大于60 ,存储，阶段判断依据
+    if(score >=60) {
+      switch (postId) {
+        case '0':{
+          var onePassGrade = wx.getStorageSync('onePassGrade') || 0
+          wx.setStorageSync('onePassGrade', onePassGrade+1)
+          break;
+        }
+        case '1':{
+          var twoPassGrade = wx.getStorageSync('twoPassGrade') || 0
+          wx.setStorageSync('twoPassGrade', twoPassGrade+1)
+          break;
+        }
+        case '2':{
+          var threePassGrade = wx.getStorageSync('threePassGrade') || 0
+          wx.setStorageSync('threePassGrade', threePassGrade+1)
+          break;
+        }
+        case '3':{
+          var fourPassGrade = wx.getStorageSync('fourPassGrade') || 0
+          wx.setStorageSync('fourPassGrade', fourPassGrade+1)
+          break;
+        }
+      }
+    
+    }
   },
 
   /**

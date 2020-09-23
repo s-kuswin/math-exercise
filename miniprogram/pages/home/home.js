@@ -5,6 +5,8 @@ let topicList = [] //问题列表
 let resultList = [] //答案列表
 let answerList = [] //回答的结果列表
 let score = 0 //分数
+let stage = 1
+let postId
 Page({
   /**
    * 页面的初始数据
@@ -20,20 +22,42 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    switch(options.postId) {
+    postId = options.postId
+    switch(postId) {
       case '0':{
+        let onePassGrade = wx.getStorageSync('onePassGrade')
+        stage = 1
+        if(onePassGrade) {
+          stage = onePassGrade > 10?'2': onePassGrade > 50 ?'3':'1'
+        }
+        
         this.oneRandomQuestion()
         break;
       }
       case '1':{
+        let twoPassGrade = wx.getStorageSync('twoPassGrade')
+        stage = 1
+        if(twoPassGrade) {
+          stage = twoPassGrade > 10?'2': twoPassGrade > 50 ?'3':'1'
+        }
         this.twoRandomQuestion()
         break;
       }
       case '2': {
+        let threePassGrade = wx.getStorageSync('threePassGrade')
+        stage = 1
+        if(threePassGrade) {
+          stage = threePassGrade > 10?'2': threePassGrade > 50 ?'3':'1'
+        }
         this.threeRandomQuestion()
         break;
       }
       case '3': {
+        let fourPassGrade = wx.getStorageSync('fourPassGrade')
+        stage = 1
+        if(fourPassGrade) {
+          stage = fourPassGrade > 10?'2': fourPassGrade > 50 ?'3':'1'
+        }
         this.fourRandomQuestion()
         break;
       }
@@ -399,6 +423,7 @@ Page({
   count:function(a,b,level,minBits1,minBits2,maxBits) {
     var Arr = ['+','-','*','/']
     var n = this.getRandomNum(0,3)
+    if(level == 1) n = this.getRandomNum(0,1)
     switch(Arr[n]) {
       case '+':{
         var sum = a + b
@@ -442,24 +467,29 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      var first = Math.round(Math.random()*100);
-      var symbol = ['+','-']
-      var second = symbol[Math.floor(Math.random()*symbol.length)];
-      var three
-      switch(second) {
-        case "+":{
-          three = Math.round(Math.random()*100);
-          resultList.push(first + three);
+      var minNum, maxNum
+      switch (stage) {
+        case 1:
+          minNum = 0;
+          maxNum = 10;
           break;
-        }
-        case "-": {
-          three = Math.round(Math.random()*first);
-          resultList.push(first - three);
+        case 2:
+          minNum = 10;
+          maxNum = 30;
           break;
-        }
+        case 3:
+          minNum = 30;
+          maxNum = 100;
+          break;
       }
-      var question = first + second + three;
-      topicList.push(question)
+      var son_a = this.getRandomNum(minNum,maxNum)
+      var par_b = this.getRandomNum(minNum,maxNum)
+      var A = this.count(son_a,par_b,2,10,10,100);
+      let arr = A.split('=')
+      if(topicList.indexOf(arr[0]) == -1) {
+        topicList.push(arr[0])
+        resultList.push(arr[1])   
+      }
     }
   },
   //获取随机数
@@ -557,8 +587,9 @@ Page({
     
     if(index >= 50) {
       wx.redirectTo({
-        url: '../grade/grade?answerList='+ JSON.stringify(answerList) +'&score='+score,
+        url: '../grade/grade?answerList='+ JSON.stringify(answerList) +'&score='+score + '&postId='+postId+ '&postId='+stage,
       })
+      
       return
     }
     this.setData({
