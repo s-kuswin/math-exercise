@@ -1,12 +1,14 @@
 // miniprogram/pages/home.js
-let num = 6 //计时几秒
+let num = 12 //计时几秒
 let t ='' //延时器
 let topicList = [] //问题列表
 let resultList = [] //答案列表
 let answerList = [] //回答的结果列表
+let excellent = 0 //在6秒内打完题的
 let score = 0 //分数
 let stage = 1
-let postId
+let postId  //年级id
+let totalTime  //全程总时间
 Page({
   /**
    * 页面的初始数据
@@ -23,6 +25,7 @@ Page({
    */
   onLoad: function (options) {
     postId = options.postId
+    //根据缓存中的记录超过60的分数阶段判断
     switch(postId) {
       case '0':{
         let onePassGrade = wx.getStorageSync('onePassGrade')
@@ -68,31 +71,61 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      let several = this.getRandomNum(1,4)
-      var son_a = this.getRandomNum(1,10000);
-      var par_b = this.getRandomNum(1,10000);
-      var son_c = this.getRandomNum(1,10000);
-      var par_d = this.getRandomNum(1,10000);
+      //阶段判断控制
+      var minNum1,minNum2,maxNum,several,num
+      switch(stage) {
+        case '1':{
+          minNum1 = 100
+          minNum2 = 1000
+          maxNum = 1000
+          num = 1//小数等级，只有简单运算
+          several = this.getRandomNum(2,3)
+          if(several == 2) several = 1
+          break;
+        }
+        case '2':{
+          minNum1 = 100
+          minNum2 = 1000
+          maxNum = 1000
+          num = 2
+          several = this.getRandomNum(2,4)
+          break;
+        }
+        case '3':{
+          minNum1 = 1000
+          minNum2 = 10000
+          maxNum = 10000
+          num = 3
+          several = this.getRandomNum(2,4)
+          break;
+        }
+      }
+
+      var son_a = this.getRandomNum(minNum1,maxNum);
+      var par_b = this.getRandomNum(minNum1,maxNum);
+      var son_c = this.getRandomNum(minNum1,maxNum);
+      var par_d = this.getRandomNum(minNum1,maxNum);
+
       var A
       // console.log(several);
       
       switch(several) {
         case 1:{
-          A = this.count(son_a,par_b,4,100,10000,10000)
+          A = this.count(son_a,par_b,4,minNum1,minNum2,maxNum)
           break;
         }
         case 2:{
-          A = this.twoCount(son_a,par_b,son_c,par_d,4,100,10000,10000);
+          A = this.twoCount(son_a,par_b,son_c,par_d,4,minNum1,minNum2,maxNum);
           break;
         }
         case 3:{
-          //含有分数
-          A = this.fractionCount()
+          //含有小数
+          A = this.decimalCount(num)
           break;
         }
         case 4:{
-          //含有小数
-          A = this.decimalCount(4)
+          //含有分数
+          A = this.fractionCount()
           break;
         }
       }     
@@ -107,33 +140,64 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      let several = this.getRandomNum(1,4)
-      var son_a = this.getRandomNum(1,1000);
-      var par_b = this.getRandomNum(1,1000);
-      var son_c = this.getRandomNum(1,1000);
-      var par_d = this.getRandomNum(1,1000);
+      var minNum1,minNum2,maxNum,several,num
+      switch(stage) {
+        case '1':{
+          minNum1 = 10
+          minNum2 = 10
+          maxNum = 300
+          num = 1//小数等级，只有简单运算
+          several = this.getRandomNum(2,3)
+          if(several == 2) several = 1
+          break;
+        }
+        case '2':{
+          minNum1 = 10
+          minNum2 = 10
+          maxNum = 1000
+          num = 2
+          several = this.getRandomNum(2,3)
+          num = 1
+          break;
+        }
+        case '3':{
+          minNum1 = 100
+          minNum2 = 100
+          maxNum = 1000
+          num = 3
+          several = this.getRandomNum(2,4)
+          num = 1
+          break;
+        }
+      }
+
+      var son_a = this.getRandomNum(minNum1,maxNum);
+      var par_b = this.getRandomNum(minNum1,maxNum);
+      var son_c = this.getRandomNum(minNum1,maxNum);
+      var par_d = this.getRandomNum(minNum1,maxNum);
       var A
       switch(several) {
         case 1:{
           //一位运算
-          A = this.count(son_a,par_b,3,10,1000,1000);
+          A = this.count(son_a,par_b,3,minNum1,minNum2,maxNum);
           break;
         }
         case 2:{
           //混合运算
-          A = this.twoCount(son_a,par_b,son_c,par_d,3,10,1000,1000);
+          A = this.twoCount(son_a,par_b,son_c,par_d,3,minNum1,minNum2,maxNum);
           break;
         }
         case 3:{
+          //含有小数
+          A = this.decimalCount(num)
+          break;
+        }
+        case 4:{
           //含有分数
           A = this.fractionCount()
           break;
         }
-        case 4:{
-          //含有小数
-          A = this.decimalCount(3)
-          break;
-        }
+        
       }
       let arr = A.split('=')
       topicList.push(arr[0])
@@ -146,19 +210,43 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      let several = this.getRandomNum(1,2)
-      var son_a = this.getRandomNum(1,100);
-      var par_b = this.getRandomNum(1,100);
-      var son_c = this.getRandomNum(1,100);
-      var par_d = this.getRandomNum(1,100);
+      var minNum1,minNum2,maxNum,several
+      switch(stage) {
+        case '1':{
+          minNum1 = 10
+          minNum2 = 10
+          maxNum = 100
+          several = 1
+          break;
+        }
+        case '2':{
+          minNum1 = 10
+          minNum2 = 10
+          maxNum = 1000
+          several = 1
+          break;
+        }
+        case '3':{
+          minNum1 = 10
+          minNum2 = 100
+          maxNum = 1000
+          several = 2
+          break;
+        }
+      }
+
+      var son_a = this.getRandomNum(minNum1,maxNum);
+      var par_b = this.getRandomNum(minNum1,maxNum);
+      var son_c = this.getRandomNum(minNum1,maxNum);
+      var par_d = this.getRandomNum(minNum1,maxNum);
       var A
       switch(several) {
         case 1:{
-          A = this.count(son_a,par_b,2,10,10,100);
+          A = this.count(son_a,par_b,2,minNum1,minNum2,maxNum);
           break;
         }
         case 2:{
-          A = this.twoCount(son_a,par_b,son_c,par_d,2,10,10,100);
+          A = this.twoCount(son_a,par_b,son_c,par_d,2,minNum1,minNum2,maxNum);
           break;
         }
       }      
@@ -176,12 +264,16 @@ Page({
     var m = this.getRandomNum(0,2)
     var a = this.getRandomNum(0,100)
     var sum = 0
-    if(level == 3)  {
+    if(level == 1)  {
       n = this.getRandomNum(0,1)
     }
 
-    if(level = 4) {
-      n = this.getRandomNum(0,5)
+    if(level == 2)  {
+      n = this.getRandomNum(0,2)
+    }
+
+    if(level = 3) {
+      n = this.getRandomNum(3,4)
     }    
     switch(Arr[n]){
         case '+':{
@@ -510,8 +602,16 @@ Page({
       index:1
     })
     this.nextTopic(1)
-    this.setData({
-      t:setInterval(function(){_this.nextTopic(1)},1000)
+    t = setTimeout(function(){_this.nextTopic(1)},1000)
+    totalTime = setTimeout(function(){_this.over()},300000)
+  },
+
+  //结束答题
+  over() {
+    clearTimeout(t)
+    clearTimeout(totalTime)
+    wx.redirectTo({
+      url: '../grade/grade?score='+score + '&postId='+postId+ '&postId='+stage+ '&excellent='+excellent,
     })
   },
 
@@ -524,9 +624,8 @@ Page({
   },
 
   nextTopic:function (index) {
-    let num = this.data.num
     wx.setNavigationBarTitle({
-      title: index+'/'+'50题'+'  '+"00:0"+ num
+      title: index+'/'+'50题'+'  '+"00:"+`${num>=10?num:'0'+num}`
     })
 
     num--
@@ -536,6 +635,9 @@ Page({
     if(num == -1) {
       clearInterval(this.data.t)
       this.getAnswer(this.data.defaultVal)
+    } else {
+      // this.nextTopic(index)
+      // t = setTimeout(function(){_this.nextTopic(index)},1000)
     }
   },
 
@@ -565,9 +667,7 @@ Page({
   //获取答案列表
   getAnswer(value) {
     let index = this.data.index
-    let score = score
     const resValue = resultList[index-1]
-    let answerList = answerList
     let check = {
       trueResult: resValue,
       checkResult:value,
@@ -577,24 +677,24 @@ Page({
     if(answerList.length === index && !answerList[index - 1].checkResult) answerList.pop()
     answerList.length !== index?answerList.push(check):''
     this.setData({
-      answerList:answerList,
-      score:score,
       inputValue:'',
       defaultVal:''
     })
     
-    clearInterval(this.data.t)
+    clearTimeout(t)
+
+    //如果在6秒内完题并且正确
+    if(num >= 6 && check.verdict) {
+      excellent++
+    }
     
+    //答完50道题
     if(index >= 50) {
-      wx.redirectTo({
-        url: '../grade/grade?answerList='+ JSON.stringify(answerList) +'&score='+score + '&postId='+postId+ '&postId='+stage,
-      })
-      
+      this.over()
       return
     }
-    this.setData({
-      num:6,
-    })
+
+    num = 12
     index++
     let _this = this
     // wx.setNavigationBarTitle({
@@ -607,9 +707,7 @@ Page({
       index:index
     })
     this.nextTopic(index)
-    this.setData({
-      t:setInterval(function(){_this.nextTopic(index)},1000)
-    })
+    t = setTimeout(function(){_this.nextTopic(index)},1000)
   },
 
   // //随机选项点击，弃
@@ -660,9 +758,8 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    clearInterval(this.data.t)
-    console.log('卸载');
-    
+    clearTimeout(t)
+    clearTimeout(totalTime)
   },
 
   /**
