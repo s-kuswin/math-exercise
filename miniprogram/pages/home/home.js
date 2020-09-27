@@ -31,7 +31,7 @@ Page({
         let onePassGrade = wx.getStorageSync('onePassGrade')
         stage = 1
         if(onePassGrade) {
-          stage = onePassGrade > 10?'2': onePassGrade > 50 ?'3':'1'
+          stage = onePassGrade > 2?2: onePassGrade > 50 ?3:1
         }
         
         this.oneRandomQuestion()
@@ -41,7 +41,7 @@ Page({
         let twoPassGrade = wx.getStorageSync('twoPassGrade')
         stage = 1
         if(twoPassGrade) {
-          stage = twoPassGrade > 10?'2': twoPassGrade > 50 ?'3':'1'
+          stage = twoPassGrade > 10?2: twoPassGrade > 50 ?3:1
         }
         this.twoRandomQuestion()
         break;
@@ -50,7 +50,7 @@ Page({
         let threePassGrade = wx.getStorageSync('threePassGrade')
         stage = 1
         if(threePassGrade) {
-          stage = threePassGrade > 10?'2': threePassGrade > 50 ?'3':'1'
+          stage = threePassGrade > 10?2: threePassGrade > 50 ?3:1
         }
         this.threeRandomQuestion()
         break;
@@ -59,7 +59,7 @@ Page({
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
-          stage = fourPassGrade > 10?'2': fourPassGrade > 50 ?'3':'1'
+          stage = fourPassGrade > 10?2: fourPassGrade > 50 ?3:1
         }
         this.fourRandomQuestion()
         break;
@@ -74,16 +74,16 @@ Page({
       //阶段判断控制
       var minNum1,minNum2,maxNum,several,num
       switch(stage) {
-        case '1':{
+        case 1:{
           minNum1 = 100
-          minNum2 = 1000
+          minNum2 = 100
           maxNum = 1000
           num = 1//小数等级，只有简单运算
           several = this.getRandomNum(2,3)
           if(several == 2) several = 1
           break;
         }
-        case '2':{
+        case 2:{
           minNum1 = 100
           minNum2 = 1000
           maxNum = 1000
@@ -91,9 +91,9 @@ Page({
           several = this.getRandomNum(2,4)
           break;
         }
-        case '3':{
+        case 3:{
           minNum1 = 1000
-          minNum2 = 10000
+          minNum2 = 1000
           maxNum = 10000
           num = 3
           several = this.getRandomNum(2,4)
@@ -107,7 +107,6 @@ Page({
       var par_d = this.getRandomNum(minNum1,maxNum);
 
       var A
-      // console.log(several);
       
       switch(several) {
         case 1:{
@@ -129,10 +128,9 @@ Page({
           break;
         }
       }     
-      let arr = A.split('=')
-      topicList.push(arr[0])
-      resultList.push(arr[1])     
+      i = this.titlePush(A,i)
     }
+    
   },
 
   //三年级随机题
@@ -141,8 +139,9 @@ Page({
     resultList = []
     for(var i = 0;i < 50;i++) {
       var minNum1,minNum2,maxNum,several,num
+      
       switch(stage) {
-        case '1':{
+        case 1:{
           minNum1 = 10
           minNum2 = 10
           maxNum = 300
@@ -151,20 +150,18 @@ Page({
           if(several == 2) several = 1
           break;
         }
-        case '2':{
+        case 2:{
           minNum1 = 10
           minNum2 = 10
           maxNum = 1000
-          num = 2
           several = this.getRandomNum(2,3)
           num = 1
           break;
         }
-        case '3':{
+        case 3:{
           minNum1 = 100
           minNum2 = 100
           maxNum = 1000
-          num = 3
           several = this.getRandomNum(2,4)
           num = 1
           break;
@@ -189,6 +186,7 @@ Page({
         }
         case 3:{
           //含有小数
+          
           A = this.decimalCount(num)
           break;
         }
@@ -199,10 +197,9 @@ Page({
         }
         
       }
-      let arr = A.split('=')
-      topicList.push(arr[0])
-      resultList.push(arr[1])      
+      i = this.titlePush(A,i)
     }
+    
   },
 
   //二年级随机题
@@ -211,22 +208,23 @@ Page({
     resultList = []
     for(var i = 0;i < 50;i++) {
       var minNum1,minNum2,maxNum,several
+      
       switch(stage) {
-        case '1':{
+        case 1:{
           minNum1 = 10
           minNum2 = 10
           maxNum = 100
           several = 1
           break;
         }
-        case '2':{
+        case 2:{
           minNum1 = 10
           minNum2 = 10
           maxNum = 1000
           several = 1
           break;
         }
-        case '3':{
+        case 3:{
           minNum1 = 10
           minNum2 = 100
           maxNum = 1000
@@ -234,11 +232,12 @@ Page({
           break;
         }
       }
-
+      
       var son_a = this.getRandomNum(minNum1,maxNum);
       var par_b = this.getRandomNum(minNum1,maxNum);
       var son_c = this.getRandomNum(minNum1,maxNum);
       var par_d = this.getRandomNum(minNum1,maxNum);
+      
       var A
       switch(several) {
         case 1:{
@@ -250,10 +249,9 @@ Page({
           break;
         }
       }      
-      let arr = A.split('=')
-      topicList.push(arr[0])
-      resultList.push(arr[1])      
+      i = this.titlePush(A,i)
     }
+    
   },
 
   //小数运算
@@ -272,9 +270,10 @@ Page({
       n = this.getRandomNum(0,2)
     }
 
-    if(level = 3) {
+    if(level ==3) {
       n = this.getRandomNum(3,4)
     }    
+    
     switch(Arr[n]){
         case '+':{
           b = this.getRandomNum(0,100)
@@ -493,7 +492,6 @@ Page({
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
-        console.log(a);
         
         while(d>maxBits) {
           b = this.getRandomNum(1,minBits2);
@@ -523,12 +521,8 @@ Page({
         break;
       }
       case '-':{
-        var sum = a-b
-        while(sum<0) {
-          var b = this.getRandomNum(1,a);
-          var sum=a-b;
-        }
-        return `${a}-${b}=${sum}`
+        var sum = a+b
+        return `${sum}-${b}=${a}`
         break;
       }
       case '*':{
@@ -562,7 +556,7 @@ Page({
       var minNum, maxNum
       switch (stage) {
         case 1:
-          minNum = 0;
+          minNum = 1;
           maxNum = 10;
           break;
         case 2:
@@ -576,14 +570,26 @@ Page({
       }
       var son_a = this.getRandomNum(minNum,maxNum)
       var par_b = this.getRandomNum(minNum,maxNum)
-      var A = this.count(son_a,par_b,2,10,10,100);
-      let arr = A.split('=')
-      if(topicList.indexOf(arr[0]) == -1) {
-        topicList.push(arr[0])
-        resultList.push(arr[1])   
-      }
+      var A = this.count(son_a,par_b,1,minNum,10,maxNum);
+      i = this.titlePush(A,i)
     }
+
+    console.log(topicList);
+    
   },
+
+  //题目推送
+  titlePush(A,i) {
+    let arr = A.split('=')
+    if(topicList.indexOf(arr[0]) == -1) {
+      topicList.push(arr[0])
+      resultList.push(arr[1])   
+    } else{
+      i--
+    }
+    return i
+  },
+
   //获取随机数
   getRandomNum(min,max) {
     var range = max - min    
@@ -602,7 +608,7 @@ Page({
       index:1
     })
     this.nextTopic(1)
-    t = setTimeout(function(){_this.nextTopic(1)},1000)
+    // this.timerFun(1)
     totalTime = setTimeout(function(){_this.over()},300000)
   },
 
@@ -611,7 +617,7 @@ Page({
     clearTimeout(t)
     clearTimeout(totalTime)
     wx.redirectTo({
-      url: '../grade/grade?score='+score + '&postId='+postId+ '&postId='+stage+ '&excellent='+excellent,
+      url: '../grade/grade?score='+score + '&postId='+postId+ '&stage='+stage+ '&excellent='+excellent,
     })
   },
 
@@ -623,6 +629,15 @@ Page({
     
   },
 
+
+timerFun:function (index){
+  //要执行的操作
+  let _this = this
+  t = setTimeout(function(){
+    _this.nextTopic(index)
+  },2000)
+},
+
   nextTopic:function (index) {
     wx.setNavigationBarTitle({
       title: index+'/'+'50题'+'  '+"00:"+`${num>=10?num:'0'+num}`
@@ -633,11 +648,13 @@ Page({
       num : num
     })
     if(num == -1) {
-      clearInterval(this.data.t)
-      this.getAnswer(this.data.defaultVal)
+      let _this = this
+      setTimeout(function(){
+        clearTimeout(t)
+        _this.getAnswer(_this.data.defaultVal)
+      },1000)
     } else {
-      // this.nextTopic(index)
-      // t = setTimeout(function(){_this.nextTopic(index)},1000)
+      this.timerFun(index)
     }
   },
 
@@ -706,8 +723,8 @@ Page({
       topicItem:topic,
       index:index
     })
+    // this.nextTopic(index)
     this.nextTopic(index)
-    t = setTimeout(function(){_this.nextTopic(index)},1000)
   },
 
   // //随机选项点击，弃
@@ -724,7 +741,6 @@ Page({
   //按键输入
   onButton(e) {
     let value  = e.target.dataset.number
-    console.log(value);
     if(value ==undefined) return
     let defaultVal = this.data.defaultVal
     var numList = ['0','1','2','3','4','5','6','7','8','9','.','/']
@@ -750,8 +766,6 @@ Page({
    */
   onHide: function () {
     console.log('隐藏');
-    
-
   },
 
   /**

@@ -3,7 +3,8 @@
     "pages/test/test",
     "pages/home/home",
     "pages/grade/grade",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/history/history"
   ],
   "tabBar": {
     "color": "#979797",

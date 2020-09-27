@@ -1,5 +1,4 @@
-// miniprogram/pages/test/test.js
-var classData = require('../../data/class.js')
+// pages/history/history.js
 Page({
 
   /**
@@ -7,27 +6,18 @@ Page({
    */
   data: {
 
-  },
+    list:[]
 
-  onTap: function (event) {
-    console.log(event.target.dataset.id,'id');
-    
-    if(event.target.dataset.id !== undefined) {
-      wx.navigateTo({
-        url:"../home/home?postId=" + event.target.dataset.id
-      });
-    }
-},
+  },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(classData);
-    
+    var list = wx.getStorageSync('list') ? JSON.parse(wx.getStorageSync('list')) : []
     this.setData({
-      classData:classData.classList
-     });
+      list:list
+    })
   },
 
   /**

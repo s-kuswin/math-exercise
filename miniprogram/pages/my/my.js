@@ -5,7 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    dayNum:0,
+    practiceNumbestScore:0,
+    practiceNum:0
   },
 
   /**
@@ -13,27 +15,37 @@ Page({
    */
   onLoad: function (options) {
 
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      dayNum: wx.getStorageSync('dayNum') || 0,
+      bestScore: wx.getStorageSync('bestScore') || 0,
+      practiceNum: wx.getStorageSync('practiceNum') || 0,
+    })
+    
+  },
 
+  historyClick:function () {
+    wx.navigateTo({
+      url:"../history/history"
+    });
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
 
   /**
@@ -61,6 +73,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+
 
   }
 })

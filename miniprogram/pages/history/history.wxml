@@ -1,0 +1,21 @@
+<view>
+  <view class="list">
+    <view class="list-item" wx:for="{{list}}" wx:for-item="item" wx:for-index="idx">
+      <view class="list-left">
+        <view>       
+          <text class="className">{{item.name}}</text>
+          <text class="stage">{{item.stage}}</text>
+        </view>
+        <view class="day">
+          <text>{{item.day}}</text>
+        </view>
+      </view>
+      <view class="list-center">
+        {{item.score/2}} / 50
+      </view>
+      <view class="list-right">
+        <text class="{{ item.score>60?'green':'red' }}">{{item.score}}分</text>
+      </view>
+    </view>
+  </view>
+</view>

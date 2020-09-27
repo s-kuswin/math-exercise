@@ -18,20 +18,44 @@ Page({
     var postId = options.postId
     this.setData({
       score:score,
-      list:JSON.parse(options.answerList),
       scoreClass: score>60?'score':'lowscore'
     })
-    let bestScore = wx.getStorageSync('bestScore')
+    let bestScore = wx.getStorageSync('bestScore') || 0
     
     
-    (bestScore&&bestScore < this.data.score) || !bestScore?wx.setStorageSync('bestScore', score):''
+    bestScore < this.data.score?wx.setStorageSync('bestScore', score):0
     bestScore?this.setData({bestScore:bestScore}):''
-    var list = wx.getStorageSync('list') || []
-    list.unshife({
+
+    //获取日期
+    let date = new Date();
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+
+    var day = `${y}-${m}-${d}`
+
+
+    //获取历史记录
+    // list = Array.from(list)
+    var list = wx.getStorageSync('list') ? JSON.parse(wx.getStorageSync('list')) : []
+    console.log(list,list.length);
+    let item = {
       name: postId ==0?'一年级': postId ==1?'二年级':postId ==2?'三年级': postId ==3?'四年级':'',
       score:score,
-      stage:options.stage ==1?'初级': options.stage ==2?'中级': options.stage ==3?'高级':''
-    })
+      stage:options.stage ==1?'初级': options.stage ==2?'中级': options.stage ==3?'高级':'',
+      day:day
+    }
+    if(list.length) {
+      list.unshift(item)
+    } else {
+      list.push(item)
+    }
+    
+    
+    wx.setStorageSync('list', JSON.stringify(list))
+
     //大于60 ,存储，阶段判断依据
     if(score >=60) {
       switch (postId) {
@@ -56,8 +80,22 @@ Page({
           break;
         }
       }
-    
     }
+
+    
+      //测试天数收集
+      let getDay = wx.getStorageSync('day')
+      let dayNum = wx.getStorageSync('dayNum') || 0
+
+      if(getDay !== day) {
+        dayNum++
+        wx.setStorageSync('day', day)
+        wx.setStorageSync('dayNum', dayNum)
+      }
+
+      //练习试卷数量Number of 
+      let practiceNum = wx.getStorageSync('practiceNum') || 0
+      wx.setStorageSync('practiceNum', practiceNum+1)
   },
 
   /**
