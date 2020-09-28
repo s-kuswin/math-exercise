@@ -24,6 +24,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    num = 12
+    excellent = 0 //在6秒内打完题的
+    score = 0 //分数
+    stage = 1
     postId = options.postId
     //根据缓存中的记录超过60的分数阶段判断
     switch(postId) {
@@ -31,7 +35,7 @@ Page({
         let onePassGrade = wx.getStorageSync('onePassGrade')
         stage = 1
         if(onePassGrade) {
-          stage = onePassGrade > 2?2: onePassGrade > 50 ?3:1
+          stage = onePassGrade >= 50?3: onePassGrade >= 10 ?2:1
         }
         
         this.oneRandomQuestion()
@@ -41,7 +45,7 @@ Page({
         let twoPassGrade = wx.getStorageSync('twoPassGrade')
         stage = 1
         if(twoPassGrade) {
-          stage = twoPassGrade > 10?2: twoPassGrade > 50 ?3:1
+          stage = twoPassGrade > 50 ? 3 : twoPassGrade > 10 ? 2 : 1
         }
         this.twoRandomQuestion()
         break;
@@ -50,7 +54,7 @@ Page({
         let threePassGrade = wx.getStorageSync('threePassGrade')
         stage = 1
         if(threePassGrade) {
-          stage = threePassGrade > 10?2: threePassGrade > 50 ?3:1
+          stage = threePassGrade > 50 ? 3 : threePassGrade > 10 ? 2 : 1
         }
         this.threeRandomQuestion()
         break;
@@ -59,7 +63,7 @@ Page({
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
-          stage = fourPassGrade > 10?2: fourPassGrade > 50 ?3:1
+          stage = fourPassGrade > 50?3: fourPassGrade > 10 ?2:1
         }
         this.fourRandomQuestion()
         break;
@@ -72,12 +76,13 @@ Page({
     resultList = []
     for(var i = 0;i < 50;i++) {
       //阶段判断控制
-      var minNum1,minNum2,maxNum,several,num
+      var minNum1,minNum2,maxNum,several,num,maxNum2
       switch(stage) {
         case 1:{
           minNum1 = 100
           minNum2 = 100
           maxNum = 1000
+          maxNum2 = 5000
           num = 1//小数等级，只有简单运算
           several = this.getRandomNum(2,3)
           if(several == 2) several = 1
@@ -87,16 +92,18 @@ Page({
           minNum1 = 100
           minNum2 = 1000
           maxNum = 1000
+          maxNum2 = 10000
           num = 2
-          several = this.getRandomNum(2,4)
+          several = this.getRandomNum(2,3)
           break;
         }
         case 3:{
           minNum1 = 1000
           minNum2 = 1000
           maxNum = 10000
+          maxNum2 = 20000
           num = 3
-          several = this.getRandomNum(2,4)
+          several = this.getRandomNum(2,3)
           break;
         }
       }
@@ -110,7 +117,7 @@ Page({
       
       switch(several) {
         case 1:{
-          A = this.count(son_a,par_b,4,minNum1,minNum2,maxNum)
+          A = this.count(son_a,par_b,4,minNum1,minNum2,maxNum,maxNum2)
           break;
         }
         case 2:{
@@ -130,7 +137,7 @@ Page({
       }     
       i = this.titlePush(A,i)
     }
-    
+    console.log(topicList,resultList);
   },
 
   //三年级随机题
@@ -138,13 +145,14 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      var minNum1,minNum2,maxNum,several,num
+      var minNum1,minNum2,maxNum,several,num,maxNum2
       
       switch(stage) {
         case 1:{
           minNum1 = 10
-          minNum2 = 10
-          maxNum = 300
+          minNum2 = 100
+          maxNum = 1000
+          maxNum2 = 1000
           num = 1//小数等级，只有简单运算
           several = this.getRandomNum(2,3)
           if(several == 2) several = 1
@@ -152,17 +160,19 @@ Page({
         }
         case 2:{
           minNum1 = 10
-          minNum2 = 10
+          minNum2 = 100
           maxNum = 1000
+          maxNum2 = 2000
           several = this.getRandomNum(2,3)
           num = 1
           break;
         }
         case 3:{
-          minNum1 = 100
+          minNum1 = 10
           minNum2 = 100
           maxNum = 1000
-          several = this.getRandomNum(2,4)
+          maxNum2 = 5000
+          several = this.getRandomNum(2,3)
           num = 1
           break;
         }
@@ -173,10 +183,12 @@ Page({
       var son_c = this.getRandomNum(minNum1,maxNum);
       var par_d = this.getRandomNum(minNum1,maxNum);
       var A
+      console.log(several,stage);
+      
       switch(several) {
         case 1:{
           //一位运算
-          A = this.count(son_a,par_b,3,minNum1,minNum2,maxNum);
+          A = this.count(son_a,par_b,3,minNum1,minNum2,maxNum,maxNum2);
           break;
         }
         case 2:{
@@ -199,7 +211,7 @@ Page({
       }
       i = this.titlePush(A,i)
     }
-    
+    console.log(topicList,resultList);
   },
 
   //二年级随机题
@@ -207,27 +219,30 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      var minNum1,minNum2,maxNum,several
+      var minNum1,minNum2,maxNum,several,maxNum2
       
       switch(stage) {
         case 1:{
           minNum1 = 10
           minNum2 = 10
           maxNum = 100
+          maxNum2 = 100
           several = 1
           break;
         }
         case 2:{
           minNum1 = 10
           minNum2 = 10
-          maxNum = 1000
-          several = 1
+          maxNum = 100
+          maxNum2 = 300
+          several = 2
           break;
         }
         case 3:{
           minNum1 = 10
           minNum2 = 100
           maxNum = 1000
+          maxNum2 = 1000
           several = 2
           break;
         }
@@ -241,7 +256,7 @@ Page({
       var A
       switch(several) {
         case 1:{
-          A = this.count(son_a,par_b,2,minNum1,minNum2,maxNum);
+          A = this.count(son_a,par_b,2,minNum1,minNum2,maxNum,maxNum2);
           break;
         }
         case 2:{
@@ -251,7 +266,7 @@ Page({
       }      
       i = this.titlePush(A,i)
     }
-    
+    console.log(topicList,resultList);
   },
 
   //小数运算
@@ -260,7 +275,7 @@ Page({
     var shifting = [10,100,1000]
     var a,b,n,sum
     var m = this.getRandomNum(0,2)
-    var a = this.getRandomNum(0,100)
+    var a = this.getRandomNum(1,100)
     var sum = 0
     if(level == 1)  {
       n = this.getRandomNum(0,1)
@@ -276,34 +291,37 @@ Page({
     
     switch(Arr[n]){
         case '+':{
-          b = this.getRandomNum(0,100)
+          b = this.getRandomNum(1,100)
           sum = a+b
           return `${a/shifting[m]}+${b/shifting[m]}=${sum/shifting[m]}`
           break;
         }
         case '-':{
-          b = this.getRandomNum(0,a)
+          b = this.getRandomNum(1,a)
           sum = a-b
           return `${a/shifting[m]}-${b/shifting[m]}=${sum/shifting[m]}`
           break;
         }
         case '+-':{
-          b = this.getRandomNum(0,100-a)
-          var c = this.getRandomNum(0,a+b)
+          b = this.getRandomNum(1,100-a)
+          var c = this.getRandomNum(1,a+b)
           sum = a+b-c
           return `${a/shifting[m]}+${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
           break;
         }
         case '++':{
-          b = this.getRandomNum(0,100)
-          var c = this.getRandomNum(0,100)
+          b = this.getRandomNum(1,100)
+          var c = this.getRandomNum(1,100)
           sum = a+b+c
           return `${a/shifting[m]}+${b/shifting[m]}+${c/shifting[m]}=${sum/shifting[m]}`
           break;
         }
         case '--':{
-          b = this.getRandomNum(0,a)
-          var c = this.getRandomNum(0,a-b)
+          if(a == 1) {
+            b = this.getRandomNum(2,100)
+          }
+          b = this.getRandomNum(1,a-1)
+          var c = this.getRandomNum(1,a-b)
           sum = a-b-c
           return `${a/shifting[m]}-${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
           break;
@@ -325,7 +343,7 @@ Page({
     switch(Arr[n]) {
       case '+':{
         var sum = b+c
-        return `${b}/${a}+${c}/${a}=${sum}/${a}`
+        return sum == a? `${b}/${a}+${c}/${a}=1` : `${b}/${a}+${c}/${a}=${sum}/${a}`
         break;
       }
       case '-':{
@@ -335,7 +353,7 @@ Page({
           b = d
         }
         var sum = b-c
-        return `${b}/${a}-${c}/${a}=${sum}/${a}`
+        return sum?`${b}/${a}-${c}/${a}=${sum}/${a}`:`${b}/${a}-${c}/${a}=0`
         break;
       }
     }
@@ -347,18 +365,21 @@ Page({
 
     var n = this.getRandomNum(0,3)
     var m = this.getRandomNum(0,3)
-    while(n>=2&&m>=2) {
+    while(n >= 2 && m >= 2) {
+      //随机哪两种运算
       n = this.getRandomNum(0,3)
       m = this.getRandomNum(0,3)
     }
     const nm = `${n}${m}`
     switch(nm) {
       case '00':{
+        //++
         var sum = a+b+c
         return `${a}+${b}+${c}=${sum}`
         break;
       }
       case '01':{
+        //+-
         var sum = a+b-c
         if(sum<0) {
           var c = this.getRandomNum(1,a+b);
@@ -368,6 +389,7 @@ Page({
         break;
       }
       case '02':{
+        //+*
         var b = this.getRandomNum(1,minBits);
         var c = this.getRandomNum(1,minBits2);
         var d = b*c
@@ -381,6 +403,7 @@ Page({
         break;
       }
       case '03':{
+        //   +/
         var b = this.getRandomNum(1,minBits);
         var c = this.getRandomNum(1,minBits2);
         var d = b*c
@@ -394,6 +417,7 @@ Page({
         break;
       }
       case '11':{
+        // --
         var sum = a-b-c
         while(sum<0) {
           var a = this.getRandomNum(c+b,maxBits);
@@ -403,6 +427,7 @@ Page({
         break;
       }
       case '12':{
+        //   -*
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var sum = a-(b*c)
@@ -420,6 +445,7 @@ Page({
         break;
       }
       case '13':{
+        //-/
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -438,6 +464,7 @@ Page({
         break;
       }
       case '10':{
+        //-+
         var sum = a-c+b
         if(sum<0) {
           var c = this.getRandomNum(1,a+b);
@@ -447,6 +474,7 @@ Page({
         break;
       }
       case '20':{
+        //*+
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -460,6 +488,7 @@ Page({
         break;
       }
       case '21':{
+        // *-
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -477,6 +506,7 @@ Page({
         break;
       }
       case '30':{
+        //   /+
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -489,6 +519,7 @@ Page({
         return `${d}÷${c}+${a}=${sum}`
       }
       case '31':{
+        // /-
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -510,35 +541,44 @@ Page({
 
   },
 
-  count:function(a,b,level,minBits1,minBits2,maxBits) {
+  count:function(a,b,level,minBits1,minBits2,maxBits,maxBits2) {
     var Arr = ['+','-','*','/']
     var n = this.getRandomNum(0,3)
     if(level == 1) n = this.getRandomNum(0,1)
     switch(Arr[n]) {
       case '+':{
+        a = this.getRandomNum(minBits2,maxBits2)
+        a = this.getRandomNum(minBits2,maxBits2)
         var sum = a + b
-        return a +'+'+b +'='+sum;
+        return `${a}+${b}=${sum}`;
         break;
       }
       case '-':{
-        var sum = a+b
-        return `${sum}-${b}=${a}`
+        var sum = a + b
+        if(sum >maxBits) {
+          sum = this.getRandomNum(maxBits/2,maxBits)
+          console.log(sum,'sum');
+          
+          a = this.getRandomNum(minBits1,sum-1)
+          b = sum - a
+        }
+        return `${sum}-${a}=${b}`
         break;
       }
       case '*':{
-        var a = this.getRandomNum(1,minBits1);
-        var b = this.getRandomNum(1,minBits2);
+        var a = this.getRandomNum(2,minBits1);
+        var b = this.getRandomNum(2,minBits2);
         var sum = a*b
         return `${a}×${b}=${sum}`
         break;
       }
       case '/':{
-        var b = this.getRandomNum(1,minBits1);
-        var c = this.getRandomNum(1,minBits2);
+        var b = this.getRandomNum(2,minBits1);
+        var c = this.getRandomNum(2,minBits2);
         a = b*c
         while(a>maxBits) {
-          b = this.getRandomNum(1,minBits1);
-          c = this.getRandomNum(1,minBits2);
+          b = this.getRandomNum(2,minBits1);
+          c = this.getRandomNum(2,minBits2);
           a = b*c
         }
         var sum = a/b
@@ -553,29 +593,33 @@ Page({
     topicList = []
     resultList = []
     for(var i = 0;i < 50;i++) {
-      var minNum, maxNum
+      var minNum, maxNum, minNum2,maxNum2
       switch (stage) {
         case 1:
           minNum = 1;
+          minNum2 = 1;
           maxNum = 10;
+          maxNum2 = 15
           break;
         case 2:
-          minNum = 10;
+          minNum = 5;
+          minNum2 = 10;
           maxNum = 30;
+          maxNum2 = 60
           break;
         case 3:
-          minNum = 30;
+          minNum = 5;
+          minNum2 = 30;
           maxNum = 100;
+          maxNum2 = 100
           break;
       }
-      var son_a = this.getRandomNum(minNum,maxNum)
+      var son_a = this.getRandomNum(minNum2,maxNum)
       var par_b = this.getRandomNum(minNum,maxNum)
-      var A = this.count(son_a,par_b,1,minNum,10,maxNum);
+      var A = this.count(son_a,par_b,1,minNum,minNum2,maxNum,maxNum2);
       i = this.titlePush(A,i)
     }
-
     console.log(topicList);
-    
   },
 
   //题目推送
@@ -609,7 +653,9 @@ Page({
     })
     this.nextTopic(1)
     // this.timerFun(1)
-    totalTime = setTimeout(function(){_this.over()},300000)
+    totalTime = setTimeout(function(){
+      _this.over()
+    },300000)
   },
 
   //结束答题
@@ -635,7 +681,7 @@ timerFun:function (index){
   let _this = this
   t = setTimeout(function(){
     _this.nextTopic(index)
-  },2000)
+  },1000)
 },
 
   nextTopic:function (index) {
@@ -652,7 +698,7 @@ timerFun:function (index){
       setTimeout(function(){
         clearTimeout(t)
         _this.getAnswer(_this.data.defaultVal)
-      },1000)
+      },100)
     } else {
       this.timerFun(index)
     }

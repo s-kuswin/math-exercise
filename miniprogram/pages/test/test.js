@@ -10,8 +10,6 @@ Page({
   },
 
   onTap: function (event) {
-    console.log(event.target.dataset.id,'id');
-    
     if(event.target.dataset.id !== undefined) {
       wx.navigateTo({
         url:"../home/home?postId=" + event.target.dataset.id
@@ -23,8 +21,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(classData);
-    
     this.setData({
       classData:classData.classList
      });
@@ -34,21 +30,25 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log('渲染');
+    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    wx.setNavigationBarTitle({
+      title: '小学口算题'
+    })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.log('hide');
+    
   },
 
   /**

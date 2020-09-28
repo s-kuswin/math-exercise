@@ -7,7 +7,8 @@ Page({
   data: {
     score:0,
     bestScore:wx.getStorageSync('bestScore'),
-    list:[]
+    list:[],
+    excellent:''
   },
 
   /**
@@ -16,15 +17,22 @@ Page({
   onLoad: function (options) {
     var score = options.score
     var postId = options.postId
+    // 页面显示数据
     this.setData({
+      excellent:options.excellent,
       score:score,
       scoreClass: score>60?'score':'lowscore'
     })
+
+    //最好成绩
     let bestScore = wx.getStorageSync('bestScore') || 0
-    
-    
-    bestScore < this.data.score?wx.setStorageSync('bestScore', score):0
-    bestScore?this.setData({bestScore:bestScore}):''
+    if(bestScore < score) {
+      wx.setStorageSync('bestScore', score)
+      bestScore = score
+    }
+    this.setData({
+      bestScore:bestScore || 0
+    })
 
     //获取日期
     let date = new Date();
@@ -52,9 +60,8 @@ Page({
     } else {
       list.push(item)
     }
-    
-    
     wx.setStorageSync('list', JSON.stringify(list))
+
 
     //大于60 ,存储，阶段判断依据
     if(score >=60) {
@@ -109,6 +116,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    wx.setNavigationBarTitle({
+      title: '成绩'
+    })
 
   },
 

@@ -19,3 +19,9 @@
   color: lightseagreen;
   margin-top: 20px;
 }
+
+.excellent {
+  font-size: 30rpx;
+  color: darkred;
+  margin-top: 10px;
+}
