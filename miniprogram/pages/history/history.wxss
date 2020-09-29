@@ -35,6 +35,7 @@
   vertical-align: middle;
   background-color: #b3d4db;
   color: #fff;
+  border-radius: 3px;
 }
 
 .day {

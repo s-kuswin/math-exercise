@@ -95,7 +95,7 @@ Page({
           if(several == 2) several = 1
           break;
         }
-        case 2:{
+        case 2:{ 
           minNum1 = 100
           minNum2 = 1000
           maxNum = 1000
