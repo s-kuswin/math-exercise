@@ -18,11 +18,28 @@ button {
   text-align: center;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   background-image: linear-gradient(-90deg,rgba(0,0,0,.01),transparent);
+  font-size: 40rpx;
+  position: relative;
+  border-radius: 8px;
 }
 
 .topic .text{
   text-align: center;
   font-weight: bold;
+}
+
+.topic .title {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  width: 120px;
+  background: #b3d4db;
+  padding: 5px 10px;
+  font-size: 30rpx;
+  color: #fff;
+  border-radius: 0 0 8px 8px;
 }
 
 .weui-cells {
@@ -53,6 +70,7 @@ button {
   vertical-align: middle;
   margin-left: 5px;
   line-height: 30px;
+  padding: 3px;
 }
 
 .bottom button {
@@ -113,12 +131,18 @@ button {
   background-color: #fff!important;
   background-color: #F0F2F7!important;
   color: #696E80!important;
+  height: 55px;
+  line-height: 38px;
+  font-size: 45rpx;
 }
 
 .defaultBtn {
   border: 1px solid #EDEFF2;
   background-color: #fff!important;
   color: #000!important;
+  height: 55px;
+  line-height: 38px;
+  font-size: 45rpx;
 }
 
 button[type=warn] {
@@ -128,19 +152,53 @@ button[type=warn] {
 
 .iconBtn {
   padding: 7px 0 3px;
+  line-height: 50px;
 }
 .iconBtn image {
-  width: 25px;
-  height: 25px;
+  width: 27px;
+  height: 27px;
 }
 
 .right button{
-  height: 90px;
+  height: 116px;
   /* background-color: red; */
   padding: 0;
   text-align: center;
-  line-height: 90px;
+  line-height: 125px;
   font-size: 37rpx!important;
   font-weight: normal!important;
 }
 
+.icon-share {
+  text-align: center;
+  line-height: 30px!important;
+  padding: 0;
+  width: 40px!important;
+}
+
+.icon-share image{
+  width: 20px;
+  height: 20px;
+}
+
+.share {
+  position: fixed;
+  right: 2px;
+  bottom: 285px;
+}
+
+.icon-share .text {
+  width: 34px;
+  height: 20px;
+  font-size: 20rpx;
+  line-height: 20px;
+  color: #405f80;
+}
+
+.icon-view{
+  background-color: rgba(241,245,255,1);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  line-height: 41px;
+}

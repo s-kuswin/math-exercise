@@ -8,7 +8,9 @@ let excellent = 0 //在6秒内打完题的
 let score = 0 //分数
 let stage = 1
 let postId  //年级id
-let totalTime  //全程总时间
+let totalTime = 300000  //全程总时间
+let time
+let className = '一年级'
 Page({
   /**
    * 页面的初始数据
@@ -17,7 +19,8 @@ Page({
     topicItem:'',
     index:1,
     // items: [],
-    defaultVal:''
+    defaultVal:'',
+    title:'',
   },
 
   /**
@@ -32,6 +35,7 @@ Page({
     //根据缓存中的记录超过60的分数阶段判断
     switch(postId) {
       case '0':{
+        className = '一年级'
         let onePassGrade = wx.getStorageSync('onePassGrade')
         stage = 1
         if(onePassGrade) {
@@ -42,6 +46,7 @@ Page({
         break;
       }
       case '1':{
+        className = '二年级'
         let twoPassGrade = wx.getStorageSync('twoPassGrade')
         stage = 1
         if(twoPassGrade) {
@@ -51,6 +56,7 @@ Page({
         break;
       }
       case '2': {
+        className = '三年级'
         let threePassGrade = wx.getStorageSync('threePassGrade')
         stage = 1
         if(threePassGrade) {
@@ -60,6 +66,7 @@ Page({
         break;
       }
       case '3': {
+        className = '四年级'
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
@@ -183,7 +190,6 @@ Page({
       var son_c = this.getRandomNum(minNum1,maxNum);
       var par_d = this.getRandomNum(minNum1,maxNum);
       var A
-      console.log(several,stage);
       
       switch(several) {
         case 1:{
@@ -211,6 +217,7 @@ Page({
       }
       i = this.titlePush(A,i)
     }
+
     console.log(topicList,resultList);
   },
 
@@ -223,27 +230,27 @@ Page({
       
       switch(stage) {
         case 1:{
-          minNum1 = 10
-          minNum2 = 10
-          maxNum = 100
-          maxNum2 = 100
-          several = 1
+          minNum1 = 10;
+          minNum2 = 10;
+          maxNum = 100;
+          maxNum2 = 100;
+          several = 1;
           break;
         }
-        case 2:{
-          minNum1 = 10
-          minNum2 = 10
-          maxNum = 100
-          maxNum2 = 300
-          several = 2
+        case 2:{;
+          minNum1 = 10;
+          minNum2 = 10;
+          maxNum = 100;
+          maxNum2 = 300;
+          several = 2;
           break;
         }
         case 3:{
-          minNum1 = 10
-          minNum2 = 100
-          maxNum = 1000
-          maxNum2 = 1000
-          several = 2
+          minNum1 = 10;
+          minNum2 = 100;
+          maxNum = 1000;
+          maxNum2 = 1000;
+          several = 2;
           break;
         }
       }
@@ -291,43 +298,43 @@ Page({
     
     switch(Arr[n]){
         case '+':{
-          b = this.getRandomNum(1,100)
-          sum = a+b
-          return `${a/shifting[m]}+${b/shifting[m]}=${sum/shifting[m]}`
+          b = this.getRandomNum(1,100);
+          sum = a+b;
+          return `${a/shifting[m]} + ${b/shifting[m]}=${sum/shifting[m]}`;
           break;
         }
         case '-':{
-          b = this.getRandomNum(1,a)
-          sum = a-b
-          return `${a/shifting[m]}-${b/shifting[m]}=${sum/shifting[m]}`
+          b = this.getRandomNum(1,a);
+          sum = a-b;
+          return `${a/shifting[m]} - ${b/shifting[m]}=${sum/shifting[m]}`;
           break;
         }
         case '+-':{
-          b = this.getRandomNum(1,100-a)
-          var c = this.getRandomNum(1,a+b)
-          sum = a+b-c
-          return `${a/shifting[m]}+${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
+          b = this.getRandomNum(1,100-a);
+          var c = this.getRandomNum(1,a+b);
+          sum = a+b-c;
+          return `${a/shifting[m]} + ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
           break;
         }
         case '++':{
-          b = this.getRandomNum(1,100)
-          var c = this.getRandomNum(1,100)
-          sum = a+b+c
-          return `${a/shifting[m]}+${b/shifting[m]}+${c/shifting[m]}=${sum/shifting[m]}`
+          b = this.getRandomNum(1,100);
+          var c = this.getRandomNum(1,100);
+          sum = a+b+c;
+          return `${a/shifting[m]} + ${b/shifting[m]} + ${c/shifting[m]}=${sum/shifting[m]}`;
           break;
         }
         case '--':{
           if(a == 1) {
-            b = this.getRandomNum(2,100)
+            b = this.getRandomNum(2,100);
           }
-          b = this.getRandomNum(1,a-1)
-          var c = this.getRandomNum(1,a-b)
-          sum = a-b-c
-          return `${a/shifting[m]}-${b/shifting[m]}-${c/shifting[m]}=${sum/shifting[m]}`
+          b = this.getRandomNum(1,a-1);
+          var c = this.getRandomNum(1,a-b);
+          sum = a-b-c;
+          return `${a/shifting[m]} - ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
           break;
         }
         case '*':{
-          return `${a/shifting[m]}×${shifting[m]}=${a}`
+          return `${a/shifting[m]} × ${shifting[m]}=${a}`;
           break;
         }
       }
@@ -343,7 +350,7 @@ Page({
     switch(Arr[n]) {
       case '+':{
         var sum = b+c
-        return sum == a? `${b}/${a}+${c}/${a}=1` : `${b}/${a}+${c}/${a}=${sum}/${a}`
+        return sum == a? `${b}/${a} + ${c}/${a}=1` : `${b}/${a} + ${c}/${a}=${sum}/${a}`
         break;
       }
       case '-':{
@@ -353,7 +360,7 @@ Page({
           b = d
         }
         var sum = b-c
-        return sum?`${b}/${a}-${c}/${a}=${sum}/${a}`:`${b}/${a}-${c}/${a}=0`
+        return sum?`${b}/${a} - ${c}/${a}=${sum}/${a}`:`${b}/${a} - ${c}/${a}=0`
         break;
       }
     }
@@ -375,7 +382,7 @@ Page({
       case '00':{
         //++
         var sum = a+b+c
-        return `${a}+${b}+${c}=${sum}`
+        return `${a} + ${b} + ${c}=${sum}`
         break;
       }
       case '01':{
@@ -385,7 +392,7 @@ Page({
           var c = this.getRandomNum(1,a+b);
           var sum=a+b-c;
         }
-        return `${a}+${b}-${c}=${sum}`
+        return `${a} + ${b} - ${c}=${sum}`
         break;
       }
       case '02':{
@@ -399,7 +406,7 @@ Page({
           d = b*c
         }
         var sum = a+ (b*c)
-        return `${a}+${b}×${c}=${sum}`
+        return `${a} + ${b} × ${c}=${sum}`
         break;
       }
       case '03':{
@@ -413,7 +420,7 @@ Page({
           d = b*c
         }
         var sum = a+ (d/c)
-        return `${a}+${d}÷${c}=${sum}`
+        return `${a} + ${d} ÷ ${c}=${sum}`
         break;
       }
       case '11':{
@@ -423,7 +430,7 @@ Page({
           var a = this.getRandomNum(c+b,maxBits);
           var sum=a-b-c;
         }
-        return `${a}-${b}-${c}=${sum}`
+        return `${a} - ${b} - ${c}=${sum}`
         break;
       }
       case '12':{
@@ -441,7 +448,7 @@ Page({
           var a = this.getRandomNum(b*c,maxBits);
           var sum=a-(b*c);
         }
-        return `${a}-${b}×${c}=${sum}`
+        return `${a} - ${b} × ${c}=${sum}`
         break;
       }
       case '13':{
@@ -460,7 +467,7 @@ Page({
           var a = this.getRandomNum(d/c,maxBits);
           var sum=a-(d/c);
         }
-        return `${a}-${d}÷${c}=${sum}`
+        return `${a} - ${d} ÷ ${c}=${sum}`
         break;
       }
       case '10':{
@@ -470,7 +477,7 @@ Page({
           var c = this.getRandomNum(1,a+b);
           var sum=a-c+b;
         }
-        return `${a}-${c}+${b}=${sum}`;
+        return `${a} - ${c} + ${b}=${sum}`;
         break;
       }
       case '20':{
@@ -484,7 +491,7 @@ Page({
           d = b*c
         }
         var sum = (b*c) + a
-        return `${b}×${c}+${a}=${sum}`
+        return `${b} × ${c} + ${a}=${sum}`
         break;
       }
       case '21':{
@@ -502,7 +509,7 @@ Page({
           var a = this.getRandomNum(1,b*c);
           var sum=(b*c) - a;
         }        
-        return `${b}×${c}-${a}=${sum}`
+        return `${b} × ${c} - ${a}=${sum}`
         break;
       }
       case '30':{
@@ -516,7 +523,7 @@ Page({
           d = b*c
         }
         var sum = (d/c) + a
-        return `${d}÷${c}+${a}=${sum}`
+        return `${d} ÷ ${c} + ${a}=${sum}`
       }
       case '31':{
         // /-
@@ -534,7 +541,7 @@ Page({
           var a = this.getRandomNum(1,d/c);
           var sum=(d/c) - a;
         }
-        return `${d}÷${c}-${a}=${sum}`
+        return `${d} ÷ ${c} - ${a}=${sum}`
         break;
       }
     }
@@ -550,26 +557,24 @@ Page({
         a = this.getRandomNum(minBits2,maxBits2)
         a = this.getRandomNum(minBits2,maxBits2)
         var sum = a + b
-        return `${a}+${b}=${sum}`;
+        return `${a} + ${b}=${sum}`;
         break;
       }
       case '-':{
         var sum = a + b
         if(sum >maxBits) {
           sum = this.getRandomNum(maxBits/2,maxBits)
-          console.log(sum,'sum');
-          
           a = this.getRandomNum(minBits1,sum-1)
           b = sum - a
         }
-        return `${sum}-${a}=${b}`
+        return `${sum} - ${a}=${b}`
         break;
       }
       case '*':{
         var a = this.getRandomNum(2,minBits1);
         var b = this.getRandomNum(2,minBits2);
         var sum = a*b
-        return `${a}×${b}=${sum}`
+        return `${a} × ${b}=${sum}`
         break;
       }
       case '/':{
@@ -582,7 +587,7 @@ Page({
           a = b*c
         }
         var sum = a/b
-        return `${a}÷${b}=${sum}`
+        return `${a} ÷ ${b}=${sum}`
         break;
       }
     }
@@ -599,7 +604,7 @@ Page({
           minNum = 1;
           minNum2 = 1;
           maxNum = 10;
-          maxNum2 = 15
+          maxNum2 = 10
           break;
         case 2:
           minNum = 5;
@@ -619,10 +624,10 @@ Page({
       var A = this.count(son_a,par_b,1,minNum,minNum2,maxNum,maxNum2);
       i = this.titlePush(A,i)
     }
-    console.log(topicList);
+    // console.log(topicList);
   },
 
-  //题目推送
+  //题目获取
   titlePush(A,i) {
     let arr = A.split('=')
     if(topicList.indexOf(arr[0]) == -1) {
@@ -645,23 +650,73 @@ Page({
    */
   onReady: function () {
     let _this = this
-    // this.randomRes(0)
-    var topic = topicList[0]
-    this.setData({
-      topicItem:topic,
-      index:1
+    wx.showModal({
+      title: '提示',
+      content: '开始'+className+'测试，50道题全程5分钟，每道题最长12秒，是否立即开始？',
+      success (res) {
+        if (res.confirm) {
+            // this.randomRes(0)
+            var topic = topicList[0]
+            _this.setData({
+              topicItem:topic,
+              index:1
+            }) 
+            _this.nextTopic(1)
+            // this.timerFun(1)
+            totalTime = 300
+            // totalTime = setTimeout(function(){
+            //   _this.over()
+            // },300000)
+        
+            _this.setTotal()
+        } else if (res.cancel) {
+          wx.switchTab({
+            url: "../test/test",
+          })
+        }
+      }
     })
-    this.nextTopic(1)
-    // this.timerFun(1)
-    totalTime = setTimeout(function(){
-      _this.over()
-    },300000)
+
   },
+
+  totalFun:function (){
+    //要执行的操作
+    let _this = this
+    time = setTimeout(function(){
+      _this.setTotal()
+    },1000)
+  },
+
+  setTotal() {
+    let min = parseInt(totalTime/60)
+      let sec = totalTime%60
+      if(sec == 0) {
+        wx.setNavigationBarTitle({
+          title: `总时间剩余${min}分钟`
+          })
+      }
+
+      if(min == 0 && sec <= 6) {
+        wx.setNavigationBarTitle({
+        title: `总时间剩余  0${min}:${sec >9?sec:'0'+sec}`
+        })
+      }
+      
+      totalTime--
+      if(!totalTime) {
+        clearInterval(time)
+        this.over()
+      } else {
+        this.totalFun()
+      }
+  },
+
 
   //结束答题
   over() {
     clearTimeout(t)
-    clearTimeout(totalTime)
+    clearInterval(time)
+    // clearTimeout(totalTime)
     wx.redirectTo({
       url: '../grade/grade?score='+score + '&postId='+postId+ '&stage='+stage+ '&excellent='+excellent,
     })
@@ -685,20 +740,24 @@ timerFun:function (index){
 },
 
   nextTopic:function (index) {
-    wx.setNavigationBarTitle({
+    this.setData({
       title: index+'/'+'50题'+'  '+"00:"+`${num>=10?num:'0'+num}`
     })
+    // wx.setNavigationBarTitle({
+    //   title: index+'/'+'50题'+'  '+"00:"+`${num>=10?num:'0'+num}`
+    // })
 
     num--
     this.setData({
       num : num
     })
     if(num == -1) {
-      let _this = this
-      setTimeout(function(){
-        clearTimeout(t)
-        _this.getAnswer(_this.data.defaultVal)
-      },100)
+      // let _this = this
+      clearTimeout(t)
+      this.getAnswer(this.data.defaultVal)
+      // setTimeout(function(){
+     
+      // },100)
     } else {
       this.timerFun(index)
     }
@@ -819,7 +878,8 @@ timerFun:function (index){
    */
   onUnload: function () {
     clearTimeout(t)
-    clearTimeout(totalTime)
+    clearInterval(time)
+    // clearTimeout(totalTime)
   },
 
   /**

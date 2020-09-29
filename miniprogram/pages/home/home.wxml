@@ -1,5 +1,8 @@
 <view class="content">
   <view class="topic">
+    <view class="title">
+      {{ title }}
+    </view>
     <text wx:if="{{topicItem}}" class="text">{{topicItem}} = <text class="valText">{{defaultVal}}</text></text>
   <!-- <view></view> -->
   </view>
@@ -66,5 +69,12 @@
 
 
 
+  </view>
+
+  <view class="share">
+    <button open-type="share" class='iconfont icon-share'>
+      <view class="icon-view"><image src="../../images/fenxiang.svg"></image></view>
+      <view class="text">分享</view>
+    </button>
   </view>
 </view>
