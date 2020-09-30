@@ -4,3 +4,11 @@
   <view wx:if="{{bestScore}}" class="bestScore">历史最高成绩： {{bestScore}}分</view>
   <view wx:if="{{score>60}}" class="excellent">完美答题（6秒内）：{{ excellent }}个</view>
 </view>
+
+
+<view class="share">
+    <button open-type="share" class='iconfont icon-share'>
+      <view class="icon-view"><image src="../../images/fenxiang.svg"></image></view>
+      <view class="text">分享</view>
+    </button>
+  </view>

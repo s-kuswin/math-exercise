@@ -168,37 +168,3 @@ button[type=warn] {
   font-size: 37rpx!important;
   font-weight: normal!important;
 }
-
-.icon-share {
-  text-align: center;
-  line-height: 30px!important;
-  padding: 0;
-  width: 40px!important;
-}
-
-.icon-share image{
-  width: 20px;
-  height: 20px;
-}
-
-.share {
-  position: fixed;
-  right: 2px;
-  bottom: 285px;
-}
-
-.icon-share .text {
-  width: 34px;
-  height: 20px;
-  font-size: 20rpx;
-  line-height: 20px;
-  color: #405f80;
-}
-
-.icon-view{
-  background-color: rgba(241,245,255,1);
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  line-height: 41px;
-}

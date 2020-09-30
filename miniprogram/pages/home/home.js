@@ -70,7 +70,7 @@ Page({
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
-          stage = fourPassGrade > 50?3: fourPassGrade > 10 ?2:1
+          stage = fourPassGrade > 50?3: fourPassGrade > 0 ?2:1
         }
         this.fourRandomQuestion()
         break;
@@ -86,7 +86,7 @@ Page({
       var minNum1,minNum2,maxNum,several,num,maxNum2
       switch(stage) {
         case 1:{
-          minNum1 = 100
+          minNum1 = 10
           minNum2 = 100
           maxNum = 1000
           maxNum2 = 5000
@@ -96,7 +96,7 @@ Page({
           break;
         }
         case 2:{ 
-          minNum1 = 100
+          minNum1 = 10
           minNum2 = 1000
           maxNum = 1000
           maxNum2 = 10000
@@ -105,7 +105,7 @@ Page({
           break;
         }
         case 3:{
-          minNum1 = 1000
+          minNum1 = 10
           minNum2 = 1000
           maxNum = 10000
           maxNum2 = 20000
@@ -158,8 +158,8 @@ Page({
         case 1:{
           minNum1 = 10
           minNum2 = 100
-          maxNum = 1000
-          maxNum2 = 1000
+          maxNum = 2000
+          maxNum2 = 5000
           num = 1//小数等级，只有简单运算
           several = this.getRandomNum(2,3)
           if(several == 2) several = 1
@@ -168,8 +168,8 @@ Page({
         case 2:{
           minNum1 = 10
           minNum2 = 100
-          maxNum = 1000
-          maxNum2 = 2000
+          maxNum = 2000
+          maxNum2 = 5000
           several = this.getRandomNum(2,3)
           num = 1
           break;
@@ -177,7 +177,7 @@ Page({
         case 3:{
           minNum1 = 10
           minNum2 = 100
-          maxNum = 1000
+          maxNum = 2000
           maxNum2 = 5000
           several = this.getRandomNum(2,3)
           num = 1
@@ -190,6 +190,9 @@ Page({
       var son_c = this.getRandomNum(minNum1,maxNum);
       var par_d = this.getRandomNum(minNum1,maxNum);
       var A
+
+      console.log(son_a,par_b,son_c,par_d);
+      
       
       switch(several) {
         case 1:{
@@ -297,47 +300,47 @@ Page({
     }    
     
     switch(Arr[n]){
-        case '+':{
-          b = this.getRandomNum(1,100);
-          sum = a+b;
-          return `${a/shifting[m]} + ${b/shifting[m]}=${sum/shifting[m]}`;
-          break;
-        }
-        case '-':{
-          b = this.getRandomNum(1,a);
-          sum = a-b;
-          return `${a/shifting[m]} - ${b/shifting[m]}=${sum/shifting[m]}`;
-          break;
-        }
-        case '+-':{
-          b = this.getRandomNum(1,100-a);
-          var c = this.getRandomNum(1,a+b);
-          sum = a+b-c;
-          return `${a/shifting[m]} + ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
-          break;
-        }
-        case '++':{
-          b = this.getRandomNum(1,100);
-          var c = this.getRandomNum(1,100);
-          sum = a+b+c;
-          return `${a/shifting[m]} + ${b/shifting[m]} + ${c/shifting[m]}=${sum/shifting[m]}`;
-          break;
-        }
-        case '--':{
-          if(a == 1) {
-            b = this.getRandomNum(2,100);
-          }
-          b = this.getRandomNum(1,a-1);
-          var c = this.getRandomNum(1,a-b);
-          sum = a-b-c;
-          return `${a/shifting[m]} - ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
-          break;
-        }
-        case '*':{
-          return `${a/shifting[m]} × ${shifting[m]}=${a}`;
-          break;
-        }
+      case '+':{
+        b = this.getRandomNum(1,100);
+        sum = a+b;
+        return `${a/shifting[m]} + ${b/shifting[m]}=${sum/shifting[m]}`;
+        break;
       }
+      case '-':{
+        b = this.getRandomNum(1,a);
+        sum = a-b;
+        return `${a/shifting[m]} - ${b/shifting[m]}=${sum/shifting[m]}`;
+        break;
+      }
+      case '+-':{
+        b = this.getRandomNum(1,100-a);
+        var c = this.getRandomNum(1,a+b);
+        sum = a+b-c;
+        return `${a/shifting[m]} + ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
+        break;
+      }
+      case '++':{
+        b = this.getRandomNum(1,100);
+        var c = this.getRandomNum(1,100);
+        sum = a+b+c;
+        return `${a/shifting[m]} + ${b/shifting[m]} + ${c/shifting[m]}=${sum/shifting[m]}`;
+        break;
+      }
+      case '--':{
+        if(a == 1) {
+          b = this.getRandomNum(2,100);
+        }
+        b = this.getRandomNum(1,a-1);
+        var c = this.getRandomNum(1,a-b);
+        sum = a-b-c;
+        return `${a/shifting[m]} - ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
+        break;
+      }
+      case '*':{
+        return `${a/shifting[m]} × ${shifting[m]}=${a}`;
+        break;
+      }
+    }
   },
 
   // 分数运算
@@ -379,14 +382,14 @@ Page({
     }
     const nm = `${n}${m}`
     switch(nm) {
+      //++
       case '00':{
-        //++
         var sum = a+b+c
         return `${a} + ${b} + ${c}=${sum}`
         break;
       }
+       //+-
       case '01':{
-        //+-
         var sum = a+b-c
         if(sum<0) {
           var c = this.getRandomNum(1,a+b);
@@ -395,8 +398,8 @@ Page({
         return `${a} + ${b} - ${c}=${sum}`
         break;
       }
+       //+*
       case '02':{
-        //+*
         var b = this.getRandomNum(1,minBits);
         var c = this.getRandomNum(1,minBits2);
         var d = b*c
@@ -409,8 +412,8 @@ Page({
         return `${a} + ${b} × ${c}=${sum}`
         break;
       }
+      // +/
       case '03':{
-        //   +/
         var b = this.getRandomNum(1,minBits);
         var c = this.getRandomNum(1,minBits2);
         var d = b*c
@@ -423,8 +426,8 @@ Page({
         return `${a} + ${d} ÷ ${c}=${sum}`
         break;
       }
+      // --
       case '11':{
-        // --
         var sum = a-b-c
         while(sum<0) {
           var a = this.getRandomNum(c+b,maxBits);
@@ -433,8 +436,8 @@ Page({
         return `${a} - ${b} - ${c}=${sum}`
         break;
       }
+      //   -*
       case '12':{
-        //   -*
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var sum = a-(b*c)
@@ -451,8 +454,8 @@ Page({
         return `${a} - ${b} × ${c}=${sum}`
         break;
       }
+      // -/
       case '13':{
-        //-/
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -470,8 +473,8 @@ Page({
         return `${a} - ${d} ÷ ${c}=${sum}`
         break;
       }
+      //-+
       case '10':{
-        //-+
         var sum = a-c+b
         if(sum<0) {
           var c = this.getRandomNum(1,a+b);
@@ -480,8 +483,8 @@ Page({
         return `${a} - ${c} + ${b}=${sum}`;
         break;
       }
+      //*+
       case '20':{
-        //*+
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -494,8 +497,8 @@ Page({
         return `${b} × ${c} + ${a}=${sum}`
         break;
       }
+      // *-
       case '21':{
-        // *-
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -512,8 +515,8 @@ Page({
         return `${b} × ${c} - ${a}=${sum}`
         break;
       }
+      //   /+
       case '30':{
-        //   /+
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c
@@ -525,8 +528,8 @@ Page({
         var sum = (d/c) + a
         return `${d} ÷ ${c} + ${a}=${sum}`
       }
+      // /-
       case '31':{
-        // /-
         var b = this.getRandomNum(1,minBits2);
         var c = this.getRandomNum(1,minBits);
         var d = b*c

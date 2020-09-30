@@ -65,16 +65,5 @@
         <button type="warn" data-number="next" bindtap="onButton">确认</button>
       </view>
     </view>
-
-
-
-
-  </view>
-
-  <view class="share">
-    <button open-type="share" class='iconfont icon-share'>
-      <view class="icon-view"><image src="../../images/fenxiang.svg"></image></view>
-      <view class="text">分享</view>
-    </button>
   </view>
 </view>
