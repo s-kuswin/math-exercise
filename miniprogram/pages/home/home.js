@@ -49,7 +49,7 @@ Page({
         let twoPassGrade = wx.getStorageSync('twoPassGrade')
         stage = 1
         if(twoPassGrade) {
-          stage = twoPassGrade > 50 ? 3 : twoPassGrade > 0 ? 2 : 1
+          stage = twoPassGrade > 50 ? 3 : twoPassGrade > 10 ? 2 : 1
         }
         this.twoRandomQuestion()
         break;
@@ -69,7 +69,7 @@ Page({
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
-          stage = fourPassGrade > 50 ? 3 : fourPassGrade > 10 ? 2 : 1
+          stage = fourPassGrade > 0 ? 3 : fourPassGrade > 10 ? 2 : 1
         }
         this.fourRandomQuestion()
         break;
@@ -523,6 +523,8 @@ Page({
           c = this.multiple(c,level)
           d = b*c
         }
+        console.log(b,c,sum);
+        
         let sum = (b*c) + a
         return `${b} × ${c} + ${a}=${sum}`
         break;
@@ -679,9 +681,8 @@ Page({
         let a = this.getRandomNum(2,minBits1);
         let min = minBits1 == minBits2 ? 2 : minBits2/2
         let b = this.getRandomNum(min,minBits2);
-        let sum = a*b
-        
         a = this.multiple(a,level)
+        let sum = a*b
         return `${b} × ${a}=${sum}`
         break;
       }
