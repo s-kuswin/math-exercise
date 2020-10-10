@@ -219,37 +219,34 @@ Page({
   twoRandomQuestion: function() {
     topicList = []
     resultList = []
-    for(let i = 0;i < 50;i++) {
-      let minNum1,minNum2,maxNum,several
-      
-      switch(stage) {
-        case 1:{
-          minNum1 = 10;
-          minNum2 = 10;
-          maxNum = 100;
-          several = 1;
-          break;
-        }
-        case 2:{
-          minNum1 = 10;
-          minNum2 = 10;
-          maxNum = 100;
-          several = 2;
-          break;
-        }
-        case 3:{
-          minNum1 = 10;
-          minNum2 = 100;
-          maxNum = 500;
-          several = 1;
-          break;
-        }
+    let minNum1,minNum2,maxNum,several
+    switch(stage) {
+      case 1:{
+        minNum1 = 10;
+        minNum2 = 10;
+        maxNum = 100;
+        several = 1;
+        break;
       }
-      
+      case 2:{
+        minNum1 = 10;
+        minNum2 = 10;
+        maxNum = 100;
+        several = 2;
+        break;
+      }
+      case 3:{
+        minNum1 = 10;
+        minNum2 = 100;
+        maxNum = 500;
+        several = 1;
+        break;
+      }
+    }
+    for(let i = 0;i < 50;i++) {      
       let son_a = this.getRandomNum(minNum1,maxNum);
       let par_b = this.getRandomNum(minNum1,maxNum);
       let son_c = this.getRandomNum(minNum1,maxNum);
-      
       let A
       switch(several) {
         case 1:{
@@ -270,28 +267,28 @@ Page({
   oneRandomQuestion:function() {
     topicList = []
     resultList = []
+    let minNum, maxNum, minNum2, maxNum2
+    switch (stage) {
+      case 1:
+        minNum = 1;
+        minNum2 = 1;
+        maxNum = 10;
+        maxNum2 = 10;
+        break;
+      case 2:
+        minNum = 5;
+        minNum2 = 10;
+        maxNum = 30;
+        maxNum2 = 60;
+        break;
+      case 3:
+        minNum = 5;
+        minNum2 = 30;
+        maxNum = 100;
+        maxNum2 = 100;
+        break;
+    }
     for(let i = 0;i < 50;i++) {
-      let minNum, maxNum, minNum2, maxNum2
-      switch (stage) {
-        case 1:
-          minNum = 1;
-          minNum2 = 1;
-          maxNum = 10;
-          maxNum2 = 10;
-          break;
-        case 2:
-          minNum = 5;
-          minNum2 = 10;
-          maxNum = 30;
-          maxNum2 = 60;
-          break;
-        case 3:
-          minNum = 5;
-          minNum2 = 30;
-          maxNum = 100;
-          maxNum2 = 100;
-          break;
-      }
       let son_a = this.getRandomNum(minNum2,maxNum)
       let par_b = this.getRandomNum(minNum,maxNum)
       let A = this.count(son_a,par_b,1,minNum,minNum2,maxNum,maxNum2);
