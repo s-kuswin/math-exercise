@@ -69,7 +69,7 @@ Page({
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
-          stage = fourPassGrade > 0 ? 3 : fourPassGrade > 10 ? 2 : 1
+          stage = fourPassGrade > 50 ? 3 : fourPassGrade > 10 ? 2 : 1
         }
         this.fourRandomQuestion()
         break;
@@ -523,8 +523,6 @@ Page({
           c = this.multiple(c,level)
           d = b*c
         }
-        console.log(b,c,sum);
-        
         let sum = (b*c) + a
         return `${b} × ${c} + ${a}=${sum}`
         break;
@@ -658,6 +656,7 @@ Page({
     return num 
   },
 
+  //简单运算
   count:function(a,b,level,minBits1,minBits2,maxBits) {
     let Arr = ['+','-','*','/']
     let n = this.getRandomNum(0,3)
@@ -681,8 +680,9 @@ Page({
         let a = this.getRandomNum(2,minBits1);
         let min = minBits1 == minBits2 ? 2 : minBits2/2
         let b = this.getRandomNum(min,minBits2);
-        a = this.multiple(a,level)
         let sum = a*b
+        
+        a = this.multiple(a,level)
         return `${b} × ${a}=${sum}`
         break;
       }
@@ -755,7 +755,7 @@ Page({
 
   },
 
-   //开始总时间计算
+  //开始总时间计算
   totalFun:function (){
     let _this = this
     time = setTimeout(function(){
