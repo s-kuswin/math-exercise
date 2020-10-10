@@ -240,7 +240,7 @@ Page({
         case 3:{
           minNum1 = 10;
           minNum2 = 100;
-          maxNum = 1000;
+          maxNum = 500;
           several = 1;
           break;
         }
@@ -271,22 +271,25 @@ Page({
     topicList = []
     resultList = []
     for(let i = 0;i < 50;i++) {
-      let minNum, maxNum, minNum2
+      let minNum, maxNum, minNum2, maxNum2
       switch (stage) {
         case 1:
           minNum = 1;
           minNum2 = 1;
           maxNum = 10;
+          maxNum2 = 10;
           break;
         case 2:
           minNum = 5;
           minNum2 = 10;
           maxNum = 30;
+          maxNum2 = 60;
           break;
         case 3:
           minNum = 5;
           minNum2 = 30;
           maxNum = 100;
+          maxNum2 = 100;
           break;
       }
       let son_a = this.getRandomNum(minNum2,maxNum)
@@ -389,13 +392,21 @@ Page({
 
   //混合运算
   twoCount:function(a,b,c,level,minBits,minBits2,maxBits) {
-    let Arr = ['++','+-','+*','+/','--','-*','-/','-+','*+','*-','**','/+','/-','/*','//']
+    let Arr = ['++','+-','+*','+/','--','-*','-/','-+','*+','*-','/+','/-','/*','//','**']
 
     let n = this.getRandomNum(0,Arr.length-1)
+    if(level == 2) {
+      n = this.getRandomNum(0,11)
+    }
     switch(Arr[n]) {
       //++
       case '++':{
-        const sum = a+b+c
+        let sum = a+b+c
+        while(a+b > maxBits) {
+          a = this.getRandomNum(minBits,maxBits - 1 - minBits);
+          b = this.getRandomNum(minBits,maxBits - a);
+          sum = a+b+c
+        }
         return `${a} + ${b} + ${c}=${sum}`
         break;
       }
@@ -448,6 +459,9 @@ Page({
       }
       // --
       case '--':{
+        console.log(maxBits);
+        b = this.getRandomNum(minBits,maxBits - 2 - minBits);
+        c = this.getRandomNum(minBits,maxBits - 1 - b);
         let sum = a-b-c
         while(sum<0) {
           a = this.getRandomNum(c+b,maxBits);
@@ -548,25 +562,6 @@ Page({
         return `${b} × ${c} - ${a}=${sum}`
         break;
       }
-      // **
-      case '**':{
-        let min = minBits == minBits2 ? 2 : minBits2/2
-        let b = this.getRandomNum(min,minBits2);
-        let c = this.getRandomNum(2,minBits);
-        c = this.multiple(c,level)
-        let d = b*c
-        while(d>maxBits) {
-          b = this.getRandomNum(min,minBits2);
-          c = this.getRandomNum(2,minBits);
-          c = this.multiple(c,level)
-          d = b*c
-        }
-        a = this.getRandomNum(2,minBits);
-        let sum = d * a
-     
-        return `${b} × ${c} × ${a}=${sum}`
-        break;
-      }
       //   /+
       case '/+':{
         let min = minBits == minBits2 ? 2 : minBits2/2
@@ -639,6 +634,25 @@ Page({
         }
         let sum = d/c/a
         return `${d} ÷ ${c} ÷ ${a}=${sum}`
+      }
+      // **
+      case '**':{
+        let min = minBits == minBits2 ? 2 : minBits2/2
+        let b = this.getRandomNum(min,minBits2);
+        let c = this.getRandomNum(2,minBits);
+        c = this.multiple(c,level)
+        let d = b*c
+        while(d>maxBits) {
+          b = this.getRandomNum(min,minBits2);
+          c = this.getRandomNum(2,minBits);
+          c = this.multiple(c,level)
+          d = b*c
+        }
+        a = this.getRandomNum(2,minBits);
+        let sum = d * a
+      
+        return `${b} × ${c} × ${a}=${sum}`
+        break;
       }
     }
 
@@ -768,7 +782,7 @@ Page({
     let min = parseInt(totalTime/60)
     let sec = totalTime%60
     if(sec == 0) {
-      wx.setNavigationBarTitle({
+      wx.setNavigationBarTitle({               
         title: `总时间剩余${min}分钟`
         })
     }
@@ -836,13 +850,11 @@ Page({
       num : num
     })
     if(num == -1) {
-      // let _this = this
+      //倒计时结束
       clearTimeout(t)
       this.getAnswer(this.data.defaultVal)
-      // setTimeout(function(){
-     
-      // },100)
     } else {
+      //倒计时尚未结束
       this.timerFun(index)
     }
   },
@@ -881,11 +893,15 @@ Page({
       checkResult:value,
       verdict:resValue==value
     }
+    // 分数收集
     score = check.verdict? score+2:score
+
+    //防止在点击确定和自动切换下一题同时都生效获取答案，以有答案的为准
     if(answerList.length === index && !answerList[index - 1].checkResult) answerList.pop()
     answerList.length !== index?answerList.push(check):''
+
+    //清空输入的答案框
     this.setData({
-      inputValue:'',
       defaultVal:''
     })
     
