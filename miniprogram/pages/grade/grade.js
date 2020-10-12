@@ -63,8 +63,8 @@ Page({
     wx.setStorageSync('list', JSON.stringify(list))
 
 
-    //大于60 ,存储，阶段判断依据
-    if(score >=60) {
+    //大于90 ,存储，阶段判断依据
+    if(score >=90) {
       switch (postId) {
         case '0':{
           var onePassGrade = wx.getStorageSync('onePassGrade') || 0

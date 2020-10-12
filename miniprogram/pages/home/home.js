@@ -39,7 +39,7 @@ Page({
         let onePassGrade = wx.getStorageSync('onePassGrade') || 0
         stage = 1
         if(onePassGrade) {
-          stage = onePassGrade >= 50 ? 3 : onePassGrade >= 10 ? 2 : 1
+          stage = onePassGrade >= 2 ? 3 : onePassGrade >= 1 ? 2 : 1
         }
         this.oneRandomQuestion()
         break;
@@ -49,7 +49,7 @@ Page({
         let twoPassGrade = wx.getStorageSync('twoPassGrade')
         stage = 1
         if(twoPassGrade) {
-          stage = twoPassGrade > 50 ? 3 : twoPassGrade > 10 ? 2 : 1
+          stage = twoPassGrade > 2 ? 3 : twoPassGrade > 1 ? 2 : 1
         }
         this.twoRandomQuestion()
         break;
@@ -59,7 +59,7 @@ Page({
         let threePassGrade = wx.getStorageSync('threePassGrade')
         stage = 1
         if(threePassGrade) {
-          stage = threePassGrade > 50 ? 3 : threePassGrade > 10 ? 2 : 1
+          stage = threePassGrade > 2 ? 3 : threePassGrade > 1 ? 2 : 1
         }
         this.threeRandomQuestion()
         break;
@@ -69,7 +69,7 @@ Page({
         let fourPassGrade = wx.getStorageSync('fourPassGrade')
         stage = 1
         if(fourPassGrade) {
-          stage = fourPassGrade > 50 ? 3 : fourPassGrade > 10 ? 2 : 1
+          stage = fourPassGrade > 2 ? 3 : fourPassGrade > 1 ? 2 : 1
         }
         this.fourRandomQuestion()
         break;
@@ -82,33 +82,36 @@ Page({
     resultList = []
     for(let i = 0;i < 50;i++) {
       //阶段判断控制
-      let minNum1,minNum2,maxNum,several,num
+      let minNum1,minNum2,maxNum,several,num,multiple
       switch(stage) {
         case 1:{
           minNum1 = 10
-          minNum2 = 200
-          maxNum = 5000
+          minNum2 = 100
+          maxNum = 100
           num = 1//小数等级，只有简单运算
           several = this.getRandomNum(1,3)
           if(several == 2) several = 1
+          multiple = 100
           break;
         }
         case 2:{ 
           minNum1 = 10
-          minNum2 = 1000
-          maxNum = 5000
+          minNum2 = 120
+          maxNum = 120
           num = 2
           several = this.getRandomNum(1,3)
           if(several == 1) several = 2
+          multiple = 100
           break;
         }
         case 3:{
           minNum1 = 10
-          minNum2 = 1000
-          maxNum = 10000
+          minNum2 = 200
+          maxNum = 100
           num = 3
           several = this.getRandomNum(1,3)
           if(several == 1) several = 2
+          multiple = 200
           break;
         }
       }
@@ -120,11 +123,11 @@ Page({
       
       switch(several) {
         case 1:{
-          A = this.count(son_a,par_b,4,minNum1,minNum2,maxNum)
+          A = this.count(son_a,par_b,4,minNum1,minNum2,maxNum,multiple)
           break;
         }
         case 2:{
-          A = this.twoCount(son_a,par_b,son_c,4,minNum1,minNum2,maxNum);
+          A = this.twoCount(son_a,par_b,son_c,4,minNum1,minNum2,maxNum,multiple);
           break;
         }
         case 3:{
@@ -148,34 +151,37 @@ Page({
     topicList = []
     resultList = []
     for(let i = 0;i < 50;i++) {
-      let minNum1,minNum2,maxNum,several,num
+      let minNum1,minNum2,maxNum,several,num,multiple
       
       switch(stage) {
         case 1:{
           minNum1 = 10
-          minNum2 = 100
-          maxNum = 1000
+          minNum2 = 30
+          maxNum = 100
           num = 1//小数等级，只有简单加减运算
           several = this.getRandomNum(1,3)
           if(several == 2) several = 1
+          multiple = 10
           break;
         }
         case 2:{
           minNum1 = 10
-          minNum2 = 100
-          maxNum = 1000
+          minNum2 = 30
+          maxNum = 100
           several = this.getRandomNum(1,3)
           if(several == 1) several = 2 //混合运算
           num = 1
+          multiple = 10
           break;
         }
         case 3:{
           minNum1 = 10
-          minNum2 = 100
-          maxNum = 2000
+          minNum2 = 50
+          maxNum = 100
           several = this.getRandomNum(1,3)
           if(several == 1) several = 2
           num = 1
+          multiple = 100
           break;
         }
       }
@@ -188,12 +194,12 @@ Page({
       switch(several) {
         case 1:{
           //一位运算
-          A = this.count(son_a,par_b,3,minNum1,minNum2,maxNum);
+          A = this.count(son_a,par_b,3,minNum1,minNum2,maxNum,multiple);
           break;
         }
         case 2:{
           //混合运算
-          A = this.twoCount(son_a,par_b,son_c,3,minNum1,minNum2,maxNum);
+          A = this.twoCount(son_a,par_b,son_c,3,minNum1,minNum2,maxNum,multiple);
           break;
         }
         case 3:{
@@ -219,7 +225,7 @@ Page({
   twoRandomQuestion: function() {
     topicList = []
     resultList = []
-    let minNum1,minNum2,maxNum,several
+    let minNum1,minNum2,maxNum,several,multiple
     switch(stage) {
       case 1:{
         minNum1 = 10;
@@ -237,9 +243,10 @@ Page({
       }
       case 3:{
         minNum1 = 10;
-        minNum2 = 100;
-        maxNum = 500;
-        several = 1;
+        minNum2 = 10;
+        maxNum = 100;
+        several = 2;
+        multiple = 10
         break;
       }
     }
@@ -250,11 +257,11 @@ Page({
       let A
       switch(several) {
         case 1:{
-          A = this.count(son_a,par_b,2,minNum1,minNum2,maxNum);
+          A = this.count(son_a,par_b,2,minNum1,minNum2,maxNum,multiple);
           break;
         }
         case 2:{
-          A = this.twoCount(son_a,par_b,son_c,2,minNum1,minNum2,maxNum);
+          A = this.twoCount(son_a,par_b,son_c,2,minNum1,minNum2,maxNum,multiple);
           break;
         }
       }      
@@ -388,10 +395,11 @@ Page({
   },
 
   //混合运算
-  twoCount:function(a,b,c,level,minBits,minBits2,maxBits) {
+  twoCount:function(a,b,c,level,minBits,minBits2,maxBits,multiple) {
     let Arr = ['++','+-','+*','+/','--','-*','-/','-+','*+','*-','/+','/-','/*','//','**']
 
     let n = this.getRandomNum(0,Arr.length-1)
+    let max = this.addMultiple(maxBits,multiple)
     if(level == 2) {
       n = this.getRandomNum(0,11)
     }
@@ -402,8 +410,11 @@ Page({
         while(a+b > maxBits) {
           a = this.getRandomNum(minBits,maxBits - 1 - minBits);
           b = this.getRandomNum(minBits,maxBits - a);
-          sum = a+b+c
-        }
+        } 
+        a = this.addMultiple(a,multiple)
+        b = this.addMultiple(b,multiple)
+        c = this.addMultiple(c,multiple)
+        sum = a+b+c
         return `${a} + ${b} + ${c}=${sum}`
         break;
       }
@@ -415,6 +426,9 @@ Page({
           c = this.getRandomNum(2,a+b);
           sum=a+b-c;
         }
+        a = this.addMultiple(a,multiple)
+        b = this.addMultiple(b,multiple)
+        c = this.addMultiple(c,multiple)
         return `${a} + ${b} - ${c}=${sum}`
         break;
       }
@@ -425,13 +439,23 @@ Page({
         let c = this.getRandomNum(2,minBits);
         c = this.multiple(c,level)
         let d = b*c
-        while(d>maxBits) {
+        while(d>max) {
           //不超过最大范围
           b = this.getRandomNum(min,minBits);
           c = this.getRandomNum(2,minBits);
           c = this.multiple(c,level)
           d = b*c
         }
+        //双位数相乘
+        if(minBits2 >=100) {
+          let N = this.getRandomNum(0,1)
+          if(N == 1) {
+            b = this.getRandomNum(10,15);
+            c = this.getRandomNum(10,15);
+          }
+        }
+        a = this.addMultiple(a,multiple)
+
         let sum = a+ (b*c)
         return `${a} + ${b} × ${c}=${sum}`
         break;
@@ -444,12 +468,14 @@ Page({
         let c = this.getRandomNum(2,minBits);
         c = this.multiple(c,level)
         let d = b*c
-        while(d>maxBits) {
+        while(d>max) {
           b = this.getRandomNum(min,minBits2);
           c = this.getRandomNum(2,minBits);
           c = this.multiple(c,level)
           d = b*c
         }
+        a = this.addMultiple(a,multiple)
+
         let sum = a+ (d/c)
         return `${a} + ${d} ÷ ${c}=${sum}`
         break;
@@ -464,6 +490,9 @@ Page({
           a = this.getRandomNum(c+b,maxBits);
           sum=a-b-c;
         }
+        a = this.addMultiple(a,multiple)
+        b = this.addMultiple(b,multiple)
+        c = this.addMultiple(c,multiple)
         return `${a} - ${b} - ${c}=${sum}`
         break;
       }
@@ -476,16 +505,28 @@ Page({
         let sum = a-(b*c)
         let d = b*c
         
-        while(d>maxBits) {
+        while(d>max) {
           b = this.getRandomNum(min,minBits2);
           c = this.getRandomNum(2,minBits);
           c = this.multiple(c,level)
           d = b*c
         }
-        if(sum<0) {
-          a = this.getRandomNum(b*c,maxBits);
-          sum=a-(b*c);
+        //双位数相乘
+        if(minBits2 >=100) {
+          let N = this.getRandomNum(0,1)
+          if(N == 1) {
+            b = this.getRandomNum(10,15);
+            c = this.getRandomNum(10,15);
+            d = b*c
+          }
         }
+        a = this.addMultiple(a,multiple)
+        if(a-d<0) {
+          a = this.getRandomNum(b*c,maxBits);
+          a = this.addMultiple(a,multiple)
+        }
+
+        sum=a-(b*c);
         return `${a} - ${b} × ${c}=${sum}`
         break;
       }
@@ -496,18 +537,19 @@ Page({
         let c = this.getRandomNum(2,minBits);
         c = this.multiple(c,level)
         let d = b*c
-        while(d>maxBits) {
+       
+        while(d>max) {
           b = this.getRandomNum(min,minBits2);
           c = this.getRandomNum(2,minBits);
           c = this.multiple(c,level)
           d = b*c
         }
-        let sum = a-(d/c)
- 
-        if(sum<0) {
+        a = this.addMultiple(a,multiple)
+        if(a-d<0) {
           a = this.getRandomNum(d/c,maxBits);
-          sum=a-(d/c);
+          a = this.addMultiple(a,multiple)
         }
+        let sum=a-(d/c);
         return `${a} - ${d} ÷ ${c}=${sum}`
         break;
       }
@@ -518,6 +560,9 @@ Page({
           c = this.getRandomNum(2,a+b);
           sum=a-c+b;
         }
+        a = this.addMultiple(a,multiple)
+        b = this.addMultiple(b,multiple)
+        c = this.addMultiple(c,multiple)
         return `${a} - ${c} + ${b}=${sum}`;
         break;
       }
@@ -528,13 +573,22 @@ Page({
         let c = this.getRandomNum(2,minBits);
         c = this.multiple(c,level)
         let d = b*c
-        while(d>maxBits) {
+        while(d>max) {
           b = this.getRandomNum(min,minBits2);
           c = this.getRandomNum(2,minBits);
           c = this.multiple(c,level)
           d = b*c
         }
+        //双位数相乘
+        if(minBits2 >=100) {
+          let N = this.getRandomNum(0,1)
+          if(N == 1) {
+            b = this.getRandomNum(10,15);
+            c = this.getRandomNum(10,15);
+          }
+        }
         let sum = (b*c) + a
+        a = this.addMultiple(a,multiple)
         return `${b} × ${c} + ${a}=${sum}`
         break;
       }
@@ -545,17 +599,27 @@ Page({
         let c = this.getRandomNum(2,minBits);
         c = this.multiple(c,level)
         let d = b*c
-        while(d>maxBits) {
+        while(d>max) {
           b = this.getRandomNum(min,minBits2);
           c = this.getRandomNum(2,minBits);
           c = this.multiple(c,level)
           d = b*c
         }
-        let sum = (b*c) - a
-        if(sum<0) {
+        //双位数相乘
+        if(minBits2 >=100) {
+          let N = this.getRandomNum(0,1)
+          if(N == 1) {
+            b = this.getRandomNum(10,15);
+            c = this.getRandomNum(10,15);
+            d = b*c
+          }
+        }
+        a = this.addMultiple(a,multiple)
+        if(d-a<0) {
           a = this.getRandomNum(1,b*c);
-          sum = (b*c) - a;
-        }        
+          a = this.addMultiple(a,multiple)
+        } 
+        let sum = (b*c) - a;       
         return `${b} × ${c} - ${a}=${sum}`
         break;
       }
@@ -572,6 +636,7 @@ Page({
           c = this.multiple(c,level)
           d = b*c
         }
+        a = this.addMultiple(a,multiple)
         let sum = (d/c) + a
         return `${d} ÷ ${c} + ${a}=${sum}`
       }
@@ -588,11 +653,13 @@ Page({
           // c = this.getRandomNum(2,minBits);
           d = b*c
         }
-        let sum = (d/c) - a
-        if(sum<0) {
+        a = this.addMultiple(a,multiple)
+
+        if(d-a<0) {
           a = this.getRandomNum(1,d/c);
-          sum=(d/c) - a;
+          a = this.addMultiple(a,multiple)
         }
+        let sum=(d/c) - a;
         return `${d} ÷ ${c} - ${a}=${sum}`
         break;
       }
@@ -609,6 +676,7 @@ Page({
           c = this.multiple(c,level)
           d = b*c
         }
+
         a = this.getRandomNum(2,minBits);
         let sum = (d/c) * a
         return `${d} ÷ ${c} × ${a}=${sum}`
@@ -645,6 +713,15 @@ Page({
           c = this.multiple(c,level)
           d = b*c
         }
+        //双位数相乘
+        if(minBits2 >=100) {
+          let N = this.getRandomNum(0,1)
+          if(N == 1) {
+            b = this.getRandomNum(10,15);
+            c = this.getRandomNum(10,15);
+            d = b*c
+          }
+        }
         a = this.getRandomNum(2,minBits);
         let sum = d * a
       
@@ -653,6 +730,11 @@ Page({
       }
     }
 
+  },
+
+  //加减法倍数
+  addMultiple(e,mul) {
+    return mul?e*mul:e
   },
 
   //乘法倍数添加三年级和四年级
@@ -668,7 +750,7 @@ Page({
   },
 
   //简单运算
-  count:function(a,b,level,minBits1,minBits2,maxBits) {
+  count:function(a,b,level,minBits1,minBits2,maxBits,multiple) {
     let Arr = ['+','-','*','/']
     let n = this.getRandomNum(0,3)
     if(level == 1) n = this.getRandomNum(0,1)
@@ -676,6 +758,8 @@ Page({
       case '+':{
         a = this.getRandomNum(minBits2,maxBits)
         b = this.getRandomNum(minBits1,maxBits)
+        a = this.addMultiple(a,multiple)
+        b = this.addMultiple(b,multiple)
         let sum = a + b
         return `${a} + ${b}=${sum}`;
         break;
@@ -684,14 +768,27 @@ Page({
         let  sum = this.getRandomNum(maxBits/2,maxBits)
         a = this.getRandomNum(minBits1,sum-1)
         b = sum - a
+        a = this.addMultiple(a,multiple)
+        b = this.addMultiple(b,multiple)
+        sum = this.addMultiple(sum,multiple)
         return `${sum} - ${a}=${b}`
         break;
       }
       case '*':{
+        
         let a = this.getRandomNum(2,minBits1);
         let min = minBits1 == minBits2 ? 2 : minBits2/2
         let b = this.getRandomNum(min,minBits2);
         let sum = a*b
+
+        if(minBits2 >=100) {
+          let N = this.getRandomNum(0,1)
+          if(N == 1) {
+            a = this.getRandomNum(10,15);
+            b = this.getRandomNum(10,15);
+            sum = a*b
+          }
+        }
         
         a = this.multiple(a,level)
         return `${b} × ${a}=${sum}`
@@ -702,7 +799,8 @@ Page({
         let min = minBits1 == minBits2 ? 2 : minBits2/2
         let c = this.getRandomNum(min,minBits2);
         a = b*c
-        while(a>maxBits) {
+        let max = this.addMultiple(maxBits,multiple)
+        while(a>max) {
           b = this.getRandomNum(2,minBits1);
           c = this.getRandomNum(min,minBits2);
           a = b*c
