@@ -1,5 +1,5 @@
   // 四年级随机题
-  import { getRandomNum, count, twoCount, decimalCount } from './count';
+  import { getRandomNum, count, twoCount, decimalCount, titlePush } from './count';
   var topicList = []
   var resultList = []
  export function fourRandomQuestion(stage) {
@@ -57,22 +57,8 @@
           break;
         }
       }     
-      i = titlePush(A,i)
+      [i,topicList,resultList] = titlePush(A,i,topicList,resultList)
     }
     console.log(topicList,resultList);
     return [topicList,resultList]
-  }
-
-  //题目获取
-  function titlePush(A,i) {
-    console.log(A);
-    
-    let arr = A.split('=')
-    if(topicList.indexOf(arr[0]) == -1) {
-      topicList.push(arr[0])
-      resultList.push(arr[1])   
-    } else{
-      i--
-    }
-    return i
   }

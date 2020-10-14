@@ -467,3 +467,16 @@
         }
       }
     }
+
+    
+  //题目获取
+ export function titlePush(A,i,topicList,resultList) {
+    let arr = A.split('=')
+    if(topicList.indexOf(arr[0]) == -1) {
+      topicList.push(arr[0])
+      resultList.push(arr[1])   
+    } else{
+      i--
+    }
+    return [i,topicList,resultList]
+  }
