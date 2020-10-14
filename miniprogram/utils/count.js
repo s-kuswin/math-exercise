@@ -1,13 +1,13 @@
   //简单运算
-  export function count(level,minBits1,minBits2,maxBits,multiple) {
+  // export function count(level,mulMin,mulMax,maxBits,multiple) {
+  export function count(level,modMin,modMax,mulMin,mulMax,multiple) {
     let Arr = ['+','-','*','/']
     let n = getRandomNum(0,3)
-    let min = minBits1 == minBits2 ? 2 : minBits2/2
     let a,b,sum
     switch(Arr[n]) {
       case '+':{
-        a = getRandomNum(minBits2,maxBits)
-        b = getRandomNum(minBits1,maxBits)
+        a = getRandomNum(mulMax,modMax)
+        b = getRandomNum(mulMin,modMax)
         a = addMultiple(a,multiple)
         b = addMultiple(b,multiple)
         sum = a + b
@@ -15,8 +15,8 @@
         break;
       }
       case '-':{
-        sum = getRandomNum(maxBits/2,maxBits)
-        a = getRandomNum(minBits1,sum-1)
+        sum = getRandomNum(modMax/2,modMax)
+        a = getRandomNum(modMin,sum-1)
         b = sum - a
         a = addMultiple(a,multiple)
         b = addMultiple(b,multiple)
@@ -25,11 +25,11 @@
         break;
       }
       case '*':{
-        a = getRandomNum(2,minBits1);
-        b = getRandomNum(min,minBits2);
+        a = getRandomNum(2,mulMin);
+        b = getRandomNum(mulMin,mulMax);
         sum = a*b
 
-        if(minBits2 >=100) {
+        if(mulMax >=100) {
           let N = getRandomNum(0,1)
           if(N == 1) {
             a = getRandomNum(10,15);
@@ -43,8 +43,8 @@
         break;
       }
       case '/':{
-        b = getRandomNum(2,minBits1);
-        a = getRandomNum(min,minBits2);
+        b = getRandomNum(2,mulMin);
+        a = getRandomNum(mulMin,mulMax);
         sum = b*a
         return `${sum} ÷ ${b}=${a}`
         break;
@@ -53,7 +53,7 @@
   }
 
     //获取随机数
-  export function getRandomNum(min,max) {
+  export function getRandomNum(mulMin,max) {
     let range = max - min    
     return (min + Math.round(Math.random() * range))
   }
@@ -76,11 +76,9 @@
 
 
     //混合运算
-   export function twoCount(level,minBits,minBits2,maxBits,multiple) {
+  //  export function twoCount(level,minBits,mulMax,maxBits,multiple) {
+   export function twoCount(level,modMin,modMax,mulMin,mulMax,max,multiple) {
       let Arr = ['++','+-','+*','+/','--','-*','-/','-+','*+','*-','/+','/-','/*','//','**']
-      let max = addMultiple(maxBits,multiple)
-      
-      let min = minBits == minBits2 ? 2 : minBits2/2
       let a,b,c,n,sum,d
 
       if(level == 2) {
@@ -92,9 +90,9 @@
         //++
         case '++':{
           console.log('++');
-          a = getRandomNum(minBits,maxBits - 1 - minBits);
-          b = getRandomNum(minBits,maxBits - a);
-          c = getRandomNum(minBits,maxBits);
+          a = getRandomNum(modMin,modMax - 1 - modMin);
+          b = getRandomNum(modMin,modMax - a);
+          c = getRandomNum(modMin,modMax);
 
           a = addMultiple(a,multiple)
           b = addMultiple(b,multiple)
@@ -107,9 +105,9 @@
          //+-
         case '+-':{
           console.log('+-');
-          a = getRandomNum(minBits,maxBits);
-          b = getRandomNum(minBits,maxBits);
-          c = getRandomNum(2,a+b);
+          a = getRandomNum(modMin,modMax);
+          b = getRandomNum(modMin,modMax);
+          c = getRandomNum(modMin,a+b > modMax?modMax:a+b);
           
           a = addMultiple(a,multiple)
           b = addMultiple(b,multiple)
@@ -125,19 +123,19 @@
 
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
           //双位数相乘
-          if(minBits2 >=100 && getRandomNum(0,1) == 1) {
+          if(mulMax >=100 && getRandomNum(0,1) == 1) {
             b = getRandomNum(10,15);
             c = getRandomNum(10,15);
           }
 
-          a = getRandomNum(minBits,maxBits);
+          a = getRandomNum(modMin,modMax);
           a = addMultiple(a,multiple)
   
           sum = a+ (b*c)
@@ -149,13 +147,13 @@
           console.log(4);
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
-          a = getRandomNum(minBits,maxBits);
+          a = getRandomNum(modMin,modMax);
           a = addMultiple(a,multiple)
   
           sum = a+ (d/c)
@@ -166,9 +164,9 @@
         case '--':{
           console.log(5);
 
-          b = getRandomNum(minBits,maxBits - 2 - minBits);
-          c = getRandomNum(minBits,maxBits - 1 - b);
-          a = getRandomNum(c+b,maxBits);
+          b = getRandomNum(modMin,modMax - 2 - modMin);
+          c = getRandomNum(modMin,modMax - 1 - b);
+          a = getRandomNum(c+b,modMax);
           
     
           a = addMultiple(a,multiple)
@@ -184,19 +182,20 @@
           console.log(6);
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
           //双位数相乘
-          if(minBits2 >=100 && getRandomNum(0,1) == 1) {
+          if(mulMax >=100 && getRandomNum(0,1) == 1) {
             b = getRandomNum(10,15);
             c = getRandomNum(10,15);
+            c = multipleFun(c,level)
           }
 
-          a = getRandomNum(b*c,maxBits);
+          a = getRandomNum(b*c,modMax);
           a = addMultiple(a,multiple);
   
           sum = a-(b*c);
@@ -208,13 +207,13 @@
           console.log(7);
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
-          a = getRandomNum(d/c,maxBits);
+          a = getRandomNum(d/c,modMax);
           a = addMultiple(a,multiple);
         
           sum = a-(d/c);
@@ -224,9 +223,9 @@
         //-+
         case '-+':{
           console.log(8);
-          a = getRandomNum(minBits,maxBits);
-          b = getRandomNum(minBits,maxBits);
-          c = getRandomNum(2,a+b);
+          a = getRandomNum(modMin,modMax);
+          b = getRandomNum(modMin,modMax);
+          c = getRandomNum(modMin,a+b > modMax?modMax:a+b);
      
           a = addMultiple(a,multiple)
           b = addMultiple(b,multiple)
@@ -241,19 +240,20 @@
           console.log(9);
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
           //双位数相乘
-          if(minBits2 >=100 && getRandomNum(0,1) == 1) {
+          if(mulMax >=100 && getRandomNum(0,1) == 1) {
             b = getRandomNum(10,15);
             c = getRandomNum(10,15);
+            c = multipleFun(c,level)
           }
 
-          a = getRandomNum(minBits,maxBits);
+          a = getRandomNum(modMin,modMax);
           a = addMultiple(a,multiple)
           sum = (b*c) + a
           
@@ -265,20 +265,20 @@
           console.log(10);
 
           d = 0
-          while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+          while(!d || d>max || d < modMin) {
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
           //双位数相乘
-          if(minBits2 >=100 && getRandomNum(0,1) == 1) {
+          if(mulMax >=100 && getRandomNum(0,1) == 1) {
            b = getRandomNum(10,15);
            c = getRandomNum(10,15);
           }
 
-          a = getRandomNum(1,b*c);
+          a = getRandomNum(modMin,b*c);
 
           sum = (b*c) - a;       
           return `${b} × ${c} - ${a}=${sum}`
@@ -290,13 +290,13 @@
 
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
-          a = getRandomNum(minBits,maxBits);
+          a = getRandomNum(modMin,modMax);
           a = addMultiple(a,multiple)
 
           sum = (d/c) + a
@@ -306,14 +306,14 @@
         case '/-':{
           console.log(12);
           d = 0
-          while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+          while(!d || d>max || b<modMin) {
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
-          a = getRandomNum(1,d/c);
+          a = getRandomNum(modMin,d/c);
 
           sum=(d/c) - a;
           return `${d} ÷ ${c} - ${a}=${sum}`
@@ -324,13 +324,13 @@
           console.log(13);
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
   
-          a = getRandomNum(2,minBits);
+          a = getRandomNum(2,mulMin);
           sum = (d/c) * a
           return `${d} ÷ ${c} × ${a}=${sum}`
         }
@@ -339,13 +339,13 @@
         case '//':{
           console.log(14);
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
-          a = getRandomNum(2,minBits);
+          a = getRandomNum(2,mulMin);
           sum = b*c*a
           return `${sum} ÷ ${c} ÷ ${a}=${b}`
         }
@@ -356,26 +356,25 @@
 
           d = 0
           while(!d || d>max) {
-            b = getRandomNum(min,minBits2);
-            c = getRandomNum(2,minBits);
+            b = getRandomNum(mulMin,mulMax);
+            c = getRandomNum(2,mulMin);
             c = multipleFun(c,level)
             d = b*c
           }
 
           //双位数相乘
-          if(minBits2 >=100 && getRandomNum(0,1) == 1) {
+          if(mulMax >=100 && getRandomNum(0,1) == 1) {
            b = getRandomNum(10,15);
            c = getRandomNum(10,15);
           }
 
-          a = getRandomNum(2,minBits);
+          a = getRandomNum(2,mulMin);
           sum = b * c * a
         
           return `${b} × ${c} × ${a}=${sum}`
           break;
         }
       }
-  
     }
     
      //小数运算
@@ -470,13 +469,13 @@
 
     
   //题目获取
- export function titlePush(A,i,topicList,resultList) {
-    let arr = A.split('=')
-    if(topicList.indexOf(arr[0]) == -1) {
-      topicList.push(arr[0])
-      resultList.push(arr[1])   
-    } else{
-      i--
-    }
-    return [i,topicList,resultList]
-  }
+  export function titlePush(A,i,topicList,resultList) {
+     let arr = A.split('=')
+     if(topicList.indexOf(arr[0]) == -1) {
+       topicList.push(arr[0])
+       resultList.push(arr[1])   
+     } else{
+       i--
+     }
+     return [i,topicList,resultList]
+   }
