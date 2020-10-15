@@ -9,27 +9,27 @@
     let modMin,modMax,mulMin,mulMax,max,multiple,several,A
     switch(stage) {
       case 1:{
-        modMin = 50
+        modMin = 30
         modMax = 100
-        mulMin = 10
+        mulMin = 2
         mulMax = 10
         max = 100
         several = 1;
         break;
       }
       case 2:{
-        modMin = 50
+        modMin = 30
         modMax = 100
-        mulMin = 10
+        mulMin = 2
         mulMax = 10
         max = 100
         several = 2;
         break;
       }
       case 3:{
-        modMin = 50
+        modMin = 30
         modMax = 100
-        mulMin = 10
+        mulMin = 2
         mulMax = 10
         max = 1000
         several = 2;
@@ -48,6 +48,7 @@
           break;
         }
       }      
+      console.log(A);
       [i,topicList,resultList] = titlePush(A,i,topicList,resultList)
     }
     console.log(topicList,resultList);

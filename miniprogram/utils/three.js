@@ -8,30 +8,36 @@
     topicList = []
     resultList = []
     for(let i = 0;i < 50;i++) {
-      let minNum1,minNum2,maxNum,num,A,
+      let modMin,modMax,mulMin,mulMax,max,num,A,
       multiple = 10,
       several = getRandomNum(1,3)
       switch(stage) {
         case 1:{
-          minNum1 = 10
-          minNum2 = 30
-          maxNum = 100
+          modMin = 30
+          modMax = 100
+          mulMin = 10
+          mulMax = 30
+          max = 1000
           num = 1//小数等级，只有简单加减运算
           several = several == 2?1:several
           break;
         }
         case 2:{
-          minNum1 = 10
-          minNum2 = 30
-          maxNum = 100
+          modMin = 30
+          modMax = 100
+          mulMin = 10
+          mulMax = 30
+          max = 1000
           several = several == 1?2:several //混合运算
           num = 1
           break;
         }
         case 3:{
-          minNum1 = 10
-          minNum2 = 50
-          maxNum = 100
+          modMin = 100
+          modMax = 250
+          mulMin = 30
+          mulMax = 50
+          max = 2500
           several = several == 1?2:several
           num = 1
           break;
@@ -42,14 +48,14 @@
       switch(several) {
         case 1:{
           //一位运算
-          A = count(3,minNum1,minNum2,maxNum,multiple);
+          A = count(3,modMin,modMax,mulMin,mulMax,multiple);
           console.log(A);
           
           break;
         }
         case 2:{
           //混合运算
-          A = twoCount(3,minNum1,minNum2,maxNum,multiple);
+          A = twoCount(3,modMin,modMax,mulMin,mulMax,max,multiple);
           console.log(A);
           
           break;
