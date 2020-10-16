@@ -6,8 +6,8 @@
     let a,b,sum
     switch(Arr[n]) {
       case '+':{
-        a = getRandomNum(mulMax,modMax)
-        b = getRandomNum(mulMin,modMax)
+        a = getRandomNum(modMin,modMax)
+        b = getRandomNum(modMin,modMax)
         a = addMultiple(a,multiple)
         b = addMultiple(b,multiple)
         sum = a + b

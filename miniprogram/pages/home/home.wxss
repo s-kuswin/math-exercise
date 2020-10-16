@@ -73,6 +73,14 @@ button {
   padding: 3px;
 }
 
+.error {
+  border: 3px solid red;
+}
+
+.succeed {
+  border: 3px solid green;
+}
+
 .bottom button {
   width: 80%!important;
   border: 1px solid #405f80;
@@ -114,7 +122,7 @@ button {
 
 .left {
   float: left;
-  width: 75%;
+  width: 100%;
   box-sizing: border-box;
 }
 

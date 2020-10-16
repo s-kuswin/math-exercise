@@ -1,4 +1,4 @@
-let num = 12 //计时几秒
+let num = 0 //计时几秒
 let t ='' //延时器
 let topicList = [] //问题列表
 let resultList = [] //答案列表
@@ -7,7 +7,7 @@ let excellent = 0 //在6秒内打完题的
 let score = 0 //分数
 let stage = 1 //阶段
 let postId  //年级id
-let totalTime = 300000  //全程总时间
+let totalTime = 0  //全程总时间
 let time //总时间延时器
 let className = '一年级'
 import { oneRandomQuestion } from '../../utils/one';
@@ -21,16 +21,17 @@ Page({
    */
   data: {
     topicItem:'',
-    index:1,
+    index:0,
     defaultVal:'',
-    title:'',
+    title:'00:00',
+    clues:'',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    num = 12
+    num = 0
     excellent = 0 //在6秒内打完题的
     score = 0 //分数
     stage = 1
@@ -91,7 +92,7 @@ Page({
     let _this = this
     wx.showModal({
       title: '提示',
-      content: '开始'+className+'测试，50道题全程5分钟，每道题最长12秒，是否立即开始？',
+      content: '开始'+className+'测试，50道题全程5分钟，是否立即开始？',
       success (res) {
         if (res.confirm) {
             // this.randomRes(0)
@@ -101,11 +102,8 @@ Page({
               index:1
             }) 
             _this.nextTopic(1)
-            // this.timerFun(1)
-            totalTime = 300
-            // totalTime = setTimeout(function(){
-            //   _this.over()
-            // },300000)
+
+            totalTime = 0
         
             _this.setTotal()
         } else if (res.cancel) {
@@ -115,7 +113,6 @@ Page({
         }
       }
     })
-
   },
 
   //开始总时间计算
@@ -128,28 +125,38 @@ Page({
 
   //更换标题头 时间结束
   setTotal() {
-    let min = parseInt(totalTime/60)
-    let sec = totalTime%60
-    if(sec == 0) {
-      wx.setNavigationBarTitle({               
-        title: `总时间剩余${min}分钟`
-        })
-    }
 
-    if(min == 0 && sec <= 6) {
-      wx.setNavigationBarTitle({
-      title: `总时间剩余  0${min}:${sec >9?sec:'0'+sec}`
-      })
-    }
-    
-    totalTime--
-    if(!totalTime) {
+    // if(sec == 0) {
+    //   wx.setNavigationBarTitle({               
+    //     title: `总时间剩余${min}分钟`
+    //     })
+    // }
+
+    // if(min == 0 && sec <= 6) {
+    //   wx.setNavigationBarTitle({
+    //   title: `总时间剩余  0${min}:${sec >9?sec:'0'+sec}`
+    //   })
+    // }
+    this.setTitle()
+    totalTime++
+    if(totalTime == 300) {
       //时间结束
       clearInterval(time)
       this.over()
     } else {
       this.totalFun()
     }
+  },
+
+  //更改标题头
+  setTitle() {
+    console.log(totalTime,'totalTime');
+    
+    let min = parseInt(totalTime/60)
+    let sec = totalTime%60
+    this.setData({
+      title: '0'+ min+':'+`${sec>=10?sec:'0'+sec}`
+    })
   },
 
   //结束答题
@@ -187,25 +194,19 @@ Page({
    * 切换下一题
    */
   nextTopic:function (index) {
-    this.setData({
-      title: index+'/'+'50题'+'  '+"00:"+`${num>=10?num:'0'+num}`
-    })
-    // wx.setNavigationBarTitle({
-    //   title: index+'/'+'50题'+'  '+"00:"+`${num>=10?num:'0'+num}`
-    // })
-
-    num--
+    num++
     this.setData({
       num : num
     })
-    if(num == -1) {
-      //倒计时结束
-      clearTimeout(t)
-      this.getAnswer(this.data.defaultVal)
-    } else {
-      //倒计时尚未结束
-      this.timerFun(index)
-    }
+    // if(num == -1) {
+    //   //倒计时结束
+    //   clearTimeout(t)
+    //   this.getAnswer(this.data.defaultVal)
+    // } else {                                    
+    //   //倒计时尚未结束
+    //   this.timerFun(index)
+    // }
+    this.timerFun(index)
   },
 
   // randomRes:function(i) {
@@ -242,6 +243,21 @@ Page({
       checkResult:value,
       verdict:resValue==value
     }
+    if(!check.verdict) {
+      if(resValue.length <= value.length) {
+        this.setData({
+        clues:'error'
+       })
+      } else {
+        this.setData({
+          clues:''
+         })
+      }
+      return 
+    }
+    this.setData({
+      clues:'succeed'
+    })
     // 分数收集
     score = check.verdict? score+2:score
 
@@ -249,33 +265,36 @@ Page({
     if(answerList.length === index && !answerList[index - 1].checkResult) answerList.pop()
     answerList.length !== index?answerList.push(check):''
 
+    let _this = this
+    setTimeout(function(){
     //清空输入的答案框
-    this.setData({
-      defaultVal:''
-    })
-    
-    clearTimeout(t)
-
-    //如果在6秒内完题并且正确
-    if(num >= 6 && check.verdict) {
-      excellent++
-    }
-    
-    //答完50道题
-    if(index >= 50) {
-      this.over()
-      return
-    }
-
-    num = 12
-    index++
-    // this.randomRes(index-1)
-    let topic = topicList[index - 1]
-    this.setData({
-      topicItem:topic,
-      index:index
-    })
-    this.nextTopic(index)
+       _this.setData({
+         defaultVal:'',
+         clues:''
+       })
+  
+       //如果在6秒内完题并且正确
+       if(num <= 6 && check.verdict) {
+         excellent++
+       }
+  
+       clearTimeout(t)
+       //答完50道题
+       if(index >= 50) {
+         _this.over()
+         return
+       }
+  
+       num = 0
+       index++
+       // this.randomRes(index-1)
+       let topic = topicList[index - 1]
+       _this.setData({
+         topicItem:topic,
+         index:index
+       })
+       _this.nextTopic(index)
+    },500)
   },
 
   // //随机选项点击，弃
@@ -307,9 +326,12 @@ Page({
       })
     }
 
-    if(value == 'next') {
-      this.getAnswer(this.data.defaultVal)
-    }
+    let _this = this
+    setTimeout(function() {
+      _this.getAnswer(_this.data.defaultVal)
+    },100)
+
+    
   },
 
   /**

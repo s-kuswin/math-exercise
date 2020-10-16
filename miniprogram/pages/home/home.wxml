@@ -1,40 +1,39 @@
 <view class="content">
   <view class="topic">
     <view class="title">
-      {{ title }}
+      {{ index }}/50题 {{ title }}
     </view>
-    <text wx:if="{{topicItem}}" class="text">{{topicItem}} = <text class="valText">{{defaultVal}}</text></text>
+    <text wx:if="{{topicItem}}" class="text">{{topicItem}} = <text class="valText {{ clues }}">{{defaultVal}}</text></text>
+    <!-- <img src="{{clues?}}" alt=""> -->
   <!-- <view></view> -->
   </view>
   <view class="keypad">
     <view class="first">
-      <view class="col col-4">
+      <view class="col col-3">
         <button type="default" class="defaultBtn" data-number="1" bindtap="onButton">1</button>
       </view>
-      <view class="col col-4">
+      <view class="col col-3">
         <button type="default" class="defaultBtn" data-number="2" bindtap="onButton">2</button>
       </view>
-      <view class="col col-4">
+      <view class="col col-3">
         <button type="default" class="defaultBtn" data-number="3" bindtap="onButton">3</button>
       </view>
-      <view class="col col-4">
-        <button type="default" class="signBtn iconBtn" data-number="x" bindtap="onButton"><image data-number="x" src="../../images/del.svg"></image></button>
-      </view>
+ 
     </view>
 
     <view class="second">
-        <view class="col col-4">
+        <view class="col col-3">
           <button type="default" class="defaultBtn" data-number="4" bindtap="onButton">4</button>
         </view>
-        <view class="col col-4">
+        <view class="col col-3">
           <button type="default" class="defaultBtn" data-number="5" bindtap="onButton">5</button>
         </view>
-        <view class="col col-4">
+        <view class="col col-3">
           <button type="default" class="defaultBtn" data-number="6" bindtap="onButton">6</button>
         </view>
-        <view class="col col-4">
+        <!-- <view class="col col-4">
           <button type="default" class="signBtn" data-number="/" bindtap="onButton">/</button>
-        </view>
+        </view> -->
     </view>
     
     <view class="merge">
@@ -55,15 +54,18 @@
           <view class="col col-3">
             <button type="default" class="signBtn" data-number="." bindtap="onButton">•</button>
           </view>
-          <view class="col col-6">
+          <view class="col col-3">
             <button type="default" class="defaultBtn" data-number="0" bindtap="onButton">0</button>
           </view>
+          <view class="col col-3">
+            <button type="default" class="signBtn iconBtn" data-number="x" bindtap="onButton"><image data-number="x" src="../../images/del.svg"></image></button>
+           </view>
         </view>
       </view>
   
-      <view class="right">
+      <!-- <view class="right">
         <button type="warn" data-number="next" bindtap="onButton">确认</button>
-      </view>
+      </view> -->
     </view>
   </view>
 </view>

@@ -13,7 +13,7 @@
         modMax = 100
         mulMin = 2
         mulMax = 10
-        max = 100
+        max = 150
         several = 1;
         break;
       }
