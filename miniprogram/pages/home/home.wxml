@@ -10,26 +10,26 @@
   <view class="keypad">
     <view class="first">
       <view class="col col-3">
-        <button type="default" class="defaultBtn" data-number="1" bindtap="onButton">1</button>
+        <button  class="defaultBtn" data-number="1" bindtap="onButton">1</button>
       </view>
       <view class="col col-3">
-        <button type="default" class="defaultBtn" data-number="2" bindtap="onButton">2</button>
+        <button  class="defaultBtn" data-number="2" bindtap="onButton">2</button>
       </view>
       <view class="col col-3">
-        <button type="default" class="defaultBtn" data-number="3" bindtap="onButton">3</button>
+        <button  class="defaultBtn" data-number="3" bindtap="onButton">3</button>
       </view>
  
     </view>
 
     <view class="second">
         <view class="col col-3">
-          <button type="default" class="defaultBtn" data-number="4" bindtap="onButton">4</button>
+          <button class="defaultBtn" data-number="4" bindtap="onButton">4</button>
         </view>
         <view class="col col-3">
-          <button type="default" class="defaultBtn" data-number="5" bindtap="onButton">5</button>
+          <button class="defaultBtn" data-number="5" bindtap="onButton">5</button>
         </view>
         <view class="col col-3">
-          <button type="default" class="defaultBtn" data-number="6" bindtap="onButton">6</button>
+          <button class="defaultBtn" data-number="6" bindtap="onButton">6</button>
         </view>
         <!-- <view class="col col-4">
           <button type="default" class="signBtn" data-number="/" bindtap="onButton">/</button>
@@ -40,25 +40,25 @@
       <view class="left">
         <view class="three">
           <view class="col col-3">
-            <button type="default" class="defaultBtn" data-number="7" bindtap="onButton">7</button>
+            <button class="defaultBtn" data-number="7" bindtap="onButton">7</button>
           </view>
           <view class="col col-3">
-            <button type="default" class="defaultBtn" data-number="8" bindtap="onButton">8</button>
+            <button class="defaultBtn" data-number="8" bindtap="onButton">8</button>
           </view>
           <view class="col col-3">
-            <button type="default" class="defaultBtn" data-number="9" bindtap="onButton">9</button>
+            <button class="defaultBtn" data-number="9" bindtap="onButton">9</button>
           </view>
         </view>
 
         <view class="four">
           <view class="col col-3">
-            <button type="default" class="signBtn" data-number="." bindtap="onButton">•</button>
+            <button class="signBtn" data-number="." bindtap="onButton">•</button>
           </view>
           <view class="col col-3">
-            <button type="default" class="defaultBtn" data-number="0" bindtap="onButton">0</button>
+            <button class="defaultBtn" data-number="0" bindtap="onButton">0</button>
           </view>
           <view class="col col-3">
-            <button type="default" class="signBtn iconBtn" data-number="x" bindtap="onButton"><image data-number="x" src="../../images/del.svg"></image></button>
+            <button class="signBtn iconBtn" data-number="x" bindtap="onButton"><image data-number="x" src="../../images/del.svg"></image></button>
            </view>
         </view>
       </view>

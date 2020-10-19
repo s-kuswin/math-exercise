@@ -146,7 +146,7 @@ button {
 
 .defaultBtn {
   border: 1px solid #EDEFF2;
-  background-color: #fff!important;
+  background-color: #fff;
   color: #000!important;
   height: 55px;
   line-height: 38px;
@@ -175,4 +175,12 @@ button[type=warn] {
   line-height: 125px;
   font-size: 37rpx!important;
   font-weight: normal!important;
+}
+
+.defaultBtn:active {
+  background: #F0F4FA!important;
+}
+
+.signBtn:active{
+  opacity: .7;
 }
