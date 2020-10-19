@@ -6,7 +6,7 @@
   export function twoRandomQuestion (stage) {
     topicList = []
     resultList = []
-    let modMin,modMax,mulMin,mulMax,max,multiple,several,A
+    let modMin,modMax,mulMin,mulMax,max,multiple,several,A,level
     switch(stage) {
       case 1:{
         modMin = 30
@@ -15,6 +15,7 @@
         mulMax = 10
         max = 150
         several = 1;
+        level = 1
         break;
       }
       case 2:{
@@ -22,8 +23,9 @@
         modMax = 100
         mulMin = 2
         mulMax = 10
-        max = 100
-        several = 2;
+        max = 200
+        several = 1;
+        level = 2
         break;
       }
       case 3:{
@@ -31,16 +33,16 @@
         modMax = 100
         mulMin = 2
         mulMax = 10
-        max = 1000
+        max = 200
         several = 2;
-        multiple = 10
+        level = 2
         break;
       }
     }
     for(let i = 0;i < 50;i++) {      
       switch(several) {
         case 1:{
-          A = count(2,modMin,modMax,mulMin,mulMax,multiple);
+          A = count(level,modMin,modMax,mulMin,mulMax,multiple,max);
           break;
         }
         case 2:{

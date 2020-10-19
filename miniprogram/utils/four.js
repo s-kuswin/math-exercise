@@ -32,11 +32,11 @@
           break;
         }
         case 3:{
-          modMin = 250
-          modMax = 600
+          modMin = 200
+          modMax = 500
           mulMin = 120
           mulMax = 200
-          max = 6000
+          max = 5000
           num = 3
           several = several == 1 ? 2 : several
           break;
@@ -45,7 +45,7 @@
       
       switch(several) {
         case 1:{
-          A = count(4,modMin,modMax,mulMin,mulMax,multiple)
+          A = count(4,modMin,modMax,mulMin,mulMax,multiple,max)
           break;
         }
         case 2:{

@@ -47,9 +47,12 @@
         break;
       }
       case '-':{
-        sum = getRandomNum(parseInt(maxBits/2),maxBits)
-        a = getRandomNum(minBits,sum)
-        b = sum - a
+        while (!sum || sum > max || b<minBits) {
+          sum = getRandomNum(parseInt(maxBits/2),maxBits)
+          a = getRandomNum(minBits,sum)
+          b = sum - a
+        }
+        
         return `${sum} - ${a}=${b}`
         break;
       }

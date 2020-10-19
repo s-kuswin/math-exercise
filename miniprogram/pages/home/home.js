@@ -10,6 +10,7 @@ let postId  //年级id
 let totalTime = 0  //全程总时间
 let time //总时间延时器
 let className = '一年级'
+let nextIng = false
 import { oneRandomQuestion } from '../../utils/one';
 import { twoRandomQuestion } from '../../utils/two';
 import { threeRandomQuestion } from '../../utils/three';
@@ -35,6 +36,7 @@ Page({
     excellent = 0 //在6秒内打完题的
     score = 0 //分数
     stage = 1
+    nextIng = false
     postId = options.postId
     //根据缓存中的记录超过60的分数阶段判断
     //1为初级阶段，2为中级阶段，3为高级阶段
@@ -243,21 +245,20 @@ Page({
       checkResult:value,
       verdict:resValue==value
     }
-    if(!check.verdict) {
-      if(resValue.length <= value.length) {
-        this.setData({
-        clues:'error'
-       })
-      } else {
-        this.setData({
-          clues:''
-         })
-      }
-      return 
-    }
+
     this.setData({
-      clues:'succeed'
+      clues: check.verdict?'succeed':resValue.length <= value.length?'error':''
     })
+
+    //答案错误
+    if(!check.verdict) return
+
+
+    //--------------答案正确---------------------//
+    //正在切换下一题
+    nextIng = true
+
+
     // 分数收集
     score = check.verdict? score+2:score
 
@@ -268,32 +269,33 @@ Page({
     let _this = this
     setTimeout(function(){
     //清空输入的答案框
-       _this.setData({
-         defaultVal:'',
-         clues:''
-       })
+      _this.setData({
+        defaultVal:'',
+        clues:''
+      })
   
-       //如果在6秒内完题并且正确
-       if(num <= 6 && check.verdict) {
-         excellent++
-       }
+      //如果在6秒内完题并且正确
+      if(num <= 6 && check.verdict) {
+        excellent++
+      }
   
-       clearTimeout(t)
-       //答完50道题
-       if(index >= 50) {
-         _this.over()
-         return
-       }
+      clearTimeout(t)
+      //答完50道题
+      if(index >= 50) {
+        _this.over()
+        return
+      }
   
-       num = 0
-       index++
-       // this.randomRes(index-1)
-       let topic = topicList[index - 1]
-       _this.setData({
-         topicItem:topic,
-         index:index
-       })
-       _this.nextTopic(index)
+      num = 0
+      index++
+      // this.randomRes(index-1)
+      let topic = topicList[index - 1]
+      _this.setData({
+        topicItem:topic,
+        index:index
+      })
+      _this.nextTopic(index)
+      nextIng = false
     },500)
   },
 
@@ -311,7 +313,7 @@ Page({
   //按键输入
   onButton(e) {
     let value  = e.target.dataset.number
-    if(value ==undefined) return
+    if(value ==undefined || nextIng) return
     let defaultVal = this.data.defaultVal
     let numList = ['0','1','2','3','4','5','6','7','8','9','.','/']
     if(numList.indexOf(value) !== -1) {

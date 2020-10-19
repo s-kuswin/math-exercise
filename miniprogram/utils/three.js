@@ -13,18 +13,18 @@
       several = getRandomNum(1,3)
       switch(stage) {
         case 1:{
-          modMin = 30
-          modMax = 100
+          modMin = 50
+          modMax = 150
           mulMin = 10
           mulMax = 30
-          max = 1000
+          max = 2000
           num = 1//小数等级，只有简单加减运算
           several = several == 2?1:several
           break;
         }
         case 2:{
-          modMin = 30
-          modMax = 100
+          modMin = 50
+          modMax = 150
           mulMin = 10
           mulMax = 30
           max = 1000
@@ -33,11 +33,11 @@
           break;
         }
         case 3:{
-          modMin = 100
-          modMax = 250
+          modMin = 50
+          modMax = 150
           mulMin = 30
           mulMax = 50
-          max = 2500
+          max = 2000
           several = several == 1?2:several
           num = 1
           break;
@@ -48,7 +48,7 @@
       switch(several) {
         case 1:{
           //一位运算
-          A = count(3,modMin,modMax,mulMin,mulMax,multiple);
+          A = count(3,modMin,modMax,mulMin,mulMax,multiple,max);
           console.log(A);
           
           break;

@@ -1,51 +1,62 @@
   //简单运算
   // export function count(level,mulMin,mulMax,maxBits,multiple) {
-  export function count(level,modMin,modMax,mulMin,mulMax,multiple) {
+  export function count(level,modMin,modMax,mulMin,mulMax,multiple,max) {
     let Arr = ['+','-','*','/']
-    let n = getRandomNum(0,3)
+    let n = level == 1?getRandomNum(0,1) : getRandomNum(0,3)
     let a,b,sum
     switch(Arr[n]) {
       case '+':{
-        a = getRandomNum(modMin,modMax)
-        b = getRandomNum(modMin,modMax)
-        a = addMultiple(a,multiple)
-        b = addMultiple(b,multiple)
-        sum = a + b
+        while(!sum || sum>max) {
+          a = getRandomNum(modMin,modMax)
+          b = getRandomNum(modMin,modMax)
+          a = addMultiple(a,multiple)
+          b = addMultiple(b,multiple)
+          sum = a + b
+        }
+        
         return `${a} + ${b}=${sum}`;
         break;
       }
       case '-':{
-        sum = getRandomNum(modMax/2,modMax)
-        a = getRandomNum(modMin,sum-1)
-        b = sum - a
-        a = addMultiple(a,multiple)
-        b = addMultiple(b,multiple)
-        sum = addMultiple(sum,multiple)
+        while(!sum || sum>max || b<modMin) {
+          sum = getRandomNum(modMax/2,modMax)
+          a = getRandomNum(modMin,sum-1)
+          b = sum - a
+          a = addMultiple(a,multiple)
+          b = addMultiple(b,multiple)
+          sum = addMultiple(sum,multiple)
+        }
         return `${sum} - ${a}=${b}`
         break;
       }
       case '*':{
-        a = getRandomNum(2,10);
-        b = getRandomNum(mulMin,mulMax);
-        sum = a*b
-
-        if(mulMax >=100) {
-          let N = getRandomNum(0,1)
-          if(N == 1) {
-            a = getRandomNum(10,15);
-            b = getRandomNum(10,15);
+        while(!sum || sum>max) { 
+          a = getRandomNum(2,10);
+          b = getRandomNum(mulMin,mulMax);
+          sum = a*b
+  
+          if(mulMax >=100) {
+            let N = getRandomNum(0,1)
+            if(N == 1) {
+              a = getRandomNum(10,15);
+              b = getRandomNum(10,15);
+            }
           }
+          
+          a = multipleFun(a,level)
+          sum = a*b
         }
         
-        a = multipleFun(a,level)
-        sum = a*b
         return `${b} × ${a}=${sum}`
         break;
       }
       case '/':{
-        b = getRandomNum(2,10);
-        a = getRandomNum(mulMin,mulMax);
-        sum = b*a
+        while(!sum || sum>max) {
+          b = getRandomNum(2,10);
+          a = getRandomNum(mulMin,mulMax);
+          sum = b*a
+        }
+        
         return `${sum} ÷ ${b}=${a}`
         break;
       }
@@ -110,16 +121,19 @@
         }
          //+-
         case '+-':{
-          console.log(2);
-          a = getRandomNum(modMin,modMax);
-          b = getRandomNum(modMin,modMax);
-          c = getRandomNum(modMin,a+b > modMax?modMax:a+b);
+          while (!sum || sum < modMin) {
+            console.log(2);
+            a = getRandomNum(modMin,modMax);
+            b = getRandomNum(modMin,modMax);
+            c = getRandomNum(modMin,a+b > modMax?modMax:a+b);
+            
+            a = addMultiple(a,multiple)
+            b = addMultiple(b,multiple)
+            c = addMultiple(c,multiple)
+  
+            sum = a+b-c
+          }
           
-          a = addMultiple(a,multiple)
-          b = addMultiple(b,multiple)
-          c = addMultiple(c,multiple)
-
-          sum = a+b-c
           return `${a} + ${b} - ${c}=${sum}`
           break;
         }
@@ -169,75 +183,86 @@
         // --
         case '--':{
           console.log(5);
-
-          b = getRandomNum(modMin,modMax - 2 - modMin);
-          c = getRandomNum(modMin,modMax - 1 - b);
-          a = getRandomNum(c+b,modMax);
-
-          a = addMultiple(a,multiple)
-          b = addMultiple(b,multiple)
-          c = addMultiple(c,multiple)
-
-          sum = a-b-c
+          while (!sum || sum < modMin) { 
+            b = getRandomNum(modMin,modMax - 2 - modMin);
+            c = getRandomNum(modMin,modMax - 1 - b);
+            a = getRandomNum(c+b,modMax);
+  
+            a = addMultiple(a,multiple)
+            b = addMultiple(b,multiple)
+            c = addMultiple(c,multiple)
+  
+            sum = a-b-c
+          }
+     
           return `${a} - ${b} - ${c}=${sum}`
           break;
         }
         //   -*
         case '-*':{
-          console.log(6);
-          d = 0
-          while(!d || d>max || d < minProduct) {
-            b = getRandomNum(mulMin,mulMax);
-            c = getRandomNum(2,10);
-            c = multipleFun(c,level)
-            d = b*c
-          }
-
-          //双位数相乘
-          if(mulMax >=100 && getRandomNum(0,1) == 1) {
-            b = getRandomNum(10,15);
-            c = getRandomNum(10,15);
-            c = multipleFun(c,level)
-          }
-        
-          const a_min = b*c > modMax ? b*c/10<modMin?modMin:parseInt(b*c/10) : b*c 
-          a = getRandomNum(a_min ,modMax);
-          a = addMultiple(a,multiple);
+          while(!sum || sum<modMin) {
+            console.log(6);
+            d = 0
+            while(!d || d>max || d < minProduct) {
+              b = getRandomNum(mulMin,mulMax);
+              c = getRandomNum(2,10);
+              c = multipleFun(c,level)
+              d = b*c
+            }
   
-          sum = a-(b*c);
+            //双位数相乘
+            if(mulMax >=100 && getRandomNum(0,1) == 1) {
+              b = getRandomNum(10,15);
+              c = getRandomNum(10,15);
+              c = multipleFun(c,level)
+            }
+          
+            const a_min = b*c > modMax ? b*c/10<modMin?modMin:parseInt(b*c/10) : b*c 
+            a = getRandomNum(a_min ,modMax);
+            a = addMultiple(a,multiple);
+    
+            sum = a-(b*c);
+          }
+          
           return `${a} - ${b} × ${c}=${sum}`
           break;
         }
         // -/
         case '-/':{
           console.log(7);
-          d = 0
-          while(!d || d>max || d < minProduct) {
-            b = getRandomNum(mulMin,mulMax);
-            c = getRandomNum(2,10);
-            c = multipleFun(c,level)
-            d = b*c
-          }          
-
-          a = getRandomNum(d/c < modMin?modMin:d/c,modMax);
-          a = addMultiple(a,multiple);
-        
-          sum = a-(d/c);
+          while(!sum || sum < modMin) {
+            d = 0
+            while(!d || d>max || d < minProduct) {
+              b = getRandomNum(mulMin,mulMax);
+              c = getRandomNum(2,10);
+              c = multipleFun(c,level)
+              d = b*c
+            }          
+  
+            a = getRandomNum(d/c < modMin?modMin:d/c,modMax);
+            a = addMultiple(a,multiple);
+          
+            sum = a-(d/c);
+          }
+          
           return `${a} - ${d} ÷ ${c}=${sum}`
           break;
         }
         //-+
         case '-+':{
           console.log(8);
-          a = getRandomNum(modMin,modMax);
-          b = getRandomNum(modMin,modMax);
-          c = getRandomNum(modMin,a+b > modMax?modMax:a+b);
-     
-          a = addMultiple(a,multiple)
-          b = addMultiple(b,multiple)
-          c = addMultiple(c,multiple)
-
-          sum = a-c+b
+          while (!sum || sum < modMin) { 
+            a = getRandomNum(modMin,modMax);
+            b = getRandomNum(modMin,modMax);
+            c = getRandomNum(modMin,a+b > modMax?modMax:a+b);
+       
+            a = addMultiple(a,multiple)
+            b = addMultiple(b,multiple)
+            c = addMultiple(c,multiple)
+  
+            sum = a-c+b
+          }
+          
           return `${a} - ${c} + ${b}=${sum}`;
           break;
         }
@@ -269,31 +294,30 @@
         // *-
         case '*-':{
           console.log(10);
-
-          d = 0
-          while(!d || d>max || d < minProduct) {
-            b = getRandomNum(mulMin,mulMax);
-            c = getRandomNum(2,10);
-            c = multipleFun(c,level)
-            d = b*c
+          while(!sum || sum < modMin ) {
+            d = 0
+            while(!d || d>max || d < minProduct) {
+              b = getRandomNum(mulMin,mulMax);
+              c = getRandomNum(2,10);
+              c = multipleFun(c,level)
+              d = b*c
+            }
+            console.log(99999999999);
+            
+            // //双位数相乘
+            // if(mulMax >=100 && getRandomNum(0,1) == 1) {
+            //  b = getRandomNum(10,15);
+            //  c = getRandomNum(10,15);
+            //  d = b*c
+            // }
+            
+            while(!a || a > d) {  
+              a = getRandomNum(modMin,d > modMax ? modMax : d);
+              a =  minProduct < modMin*10? a : addMultiple(a,multiple)
+            }
+            sum = (b*c) - a; 
           }
-          console.log(99999999999);
-          
-          // //双位数相乘
-          // if(mulMax >=100 && getRandomNum(0,1) == 1) {
-          //  b = getRandomNum(10,15);
-          //  c = getRandomNum(10,15);
-          //  d = b*c
-          // }
-          
-          while(!a || a > d) {
-            a = getRandomNum(modMin,d > modMax ? modMax : d);
-            a =  minProduct < modMin*10? a : addMultiple(a,multiple)
-          }
-
-          console.log(a,d);
-          
-          sum = (b*c) - a;       
+                
           return `${b} × ${c} - ${a}=${sum}`
           break;
         }
@@ -406,7 +430,8 @@
     }
 
     if(level == 2)  {
-      n = getRandomNum(0,2)
+      // n = getRandomNum(0,2)
+      n = 2
     }
 
     if(level ==3) {
