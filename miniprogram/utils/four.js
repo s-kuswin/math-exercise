@@ -9,35 +9,35 @@
       //阶段判断控制
       let modMin,modMax,mulMin,mulMax,max,num,A,
       several = getRandomNum(1,3),
-      multiple = 10
+      multiple
       switch(stage) {
         case 1:{
-          modMin = 100
-          modMax = 250
+          modMin = 300
+          modMax = 1000
           mulMin = 50
           mulMax = 100
-          max = 2500
-          num = 1//小数等级，只有简单运算
+          max = 1000
+          num = 2//小数等级，简单运算和乘法运算
           several = several == 2 ? 1 : several
           break;
         }
         case 2:{ 
-          modMin = 100
-          modMax = 250
-          mulMin = 100
-          mulMax = 120
-          max = 2500
-          num = 2
+          modMin = 300
+          modMax = 1000
+          mulMin = 50
+          mulMax = 100
+          max = 3000
+          num = 3
           several = several == 1 ? 2 : several
           break;
         }
         case 3:{
-          modMin = 200
-          modMax = 500
+          modMin = 500
+          modMax = 2000
           mulMin = 120
           mulMax = 200
-          max = 5000
-          num = 3
+          max = 6000
+          num = 4
           several = several == 1 ? 2 : several
           break;
         }

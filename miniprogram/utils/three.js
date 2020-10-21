@@ -9,37 +9,39 @@
     resultList = []
     for(let i = 0;i < 50;i++) {
       let modMin,modMax,mulMin,mulMax,max,num,A,
-      multiple = 10,
-      several = getRandomNum(1,3)
+      multiple,
+      several
       switch(stage) {
         case 1:{
           modMin = 50
-          modMax = 150
+          modMax = 180
           mulMin = 10
           mulMax = 30
-          max = 2000
+          max = 250
           num = 1//小数等级，只有简单加减运算
-          several = several == 2?1:several
+          several = 1
           break;
         }
         case 2:{
-          modMin = 50
-          modMax = 150
-          mulMin = 10
-          mulMax = 30
-          max = 1000
-          several = several == 1?2:several //混合运算
+          modMin = 100
+          modMax = 500
+          mulMin = 30
+          mulMax = 50
+          max = 1500
+          several = 1
           num = 1
           break;
         }
         case 3:{
-          modMin = 50
-          modMax = 150
+          modMin = 100
+          modMax = 500
           mulMin = 30
           mulMax = 50
-          max = 2000
-          several = several == 1?2:several
-          num = 1
+          max = 1500
+          // multiple = 10
+          several = getRandomNum(1,3)
+          several = 2
+          // num = 1
           break;
         }
       }

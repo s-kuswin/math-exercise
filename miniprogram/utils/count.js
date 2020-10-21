@@ -30,10 +30,9 @@
         break;
       }
       case '*':{
-        while(!sum || sum>max) { 
+        while(!sum || sum > max || sum < modMin) { 
           a = getRandomNum(2,10);
           b = getRandomNum(mulMin,mulMax);
-          sum = a*b
   
           if(mulMax >=100) {
             let N = getRandomNum(0,1)
@@ -43,7 +42,7 @@
             }
           }
           
-          a = multipleFun(a,level)
+          a = multipleFun(a,multiple)
           sum = a*b
         }
         
@@ -75,8 +74,8 @@
   }
 
     //乘法倍数添加三年级和四年级
-  function multipleFun(num,level) {
-    if(level >= 3) {
+  function multipleFun(num,multiple) {
+    if(multiple) {
       //倍数
       let list = [1,10]
       let r = getRandomNum(0,1);
@@ -88,15 +87,14 @@
 
     //混合运算
   //  export function twoCount(level,minBits,mulMax,maxBits,multiple) {
-   export function twoCount(level,modMin,modMax,mulMin,mulMax,max,multiple) {
+    export function twoCount(level,modMin,modMax,mulMin,mulMax,max,multiple) {
       let Arr = ['++','+-','+*','+/','--','-*','-/','-+','*+','*-','/+','/*','//','**']
       // ,'/-'
       let a,b,c,n,sum,d,
       minProduct = addMultiple(modMin,multiple),
-      maxProduct = mulMax*mulMax*10
+      maxProduct = addMultiple(mulMax*mulMax)
 
       if(level == 2) {
-        maxProduct = parseInt(maxProduct/10) 
         n = getRandomNum(0,10)
       } else {
         n = getRandomNum(0,Arr.length-1)
@@ -145,7 +143,7 @@
           while(!d || d>max || d < minProduct) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
             d = b*c
           }
 
@@ -169,7 +167,7 @@
           while(!d || d>max || d < minProduct) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
             d = b*c
           }
 
@@ -206,7 +204,7 @@
             while(!d || d>max || d < minProduct) {
               b = getRandomNum(mulMin,mulMax);
               c = getRandomNum(2,10);
-              c = multipleFun(c,level)
+              c = multipleFun(c,multiple)
               d = b*c
             }
   
@@ -214,7 +212,7 @@
             if(mulMax >=100 && getRandomNum(0,1) == 1) {
               b = getRandomNum(10,15);
               c = getRandomNum(10,15);
-              c = multipleFun(c,level)
+              c = multipleFun(c,multiple)
             }
           
             const a_min = b*c > modMax ? b*c/10<modMin?modMin:parseInt(b*c/10) : b*c 
@@ -232,13 +230,14 @@
           console.log(7);
           while(!sum || sum < modMin) {
             d = 0
-            while(!d || d>max || d < minProduct) {
+            while(!d || d>max || d < minProduct) {             
               b = getRandomNum(mulMin,mulMax);
               c = getRandomNum(2,10);
-              c = multipleFun(c,level)
+              c = multipleFun(c,multiple)
               d = b*c
+              console.log(minProduct,c,d,b,max,'@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
             }          
-  
+
             a = getRandomNum(d/c < modMin?modMin:d/c,modMax);
             a = addMultiple(a,multiple);
           
@@ -273,7 +272,7 @@
           while(!d || d>max || d < minProduct) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
             d = b*c
           }
 
@@ -281,7 +280,7 @@
           if(mulMax >=100 && getRandomNum(0,1) == 1) {
             b = getRandomNum(10,15);
             c = getRandomNum(10,15);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
           }
 
           a = getRandomNum(modMin,modMax);
@@ -299,7 +298,7 @@
             while(!d || d>max || d < minProduct) {
               b = getRandomNum(mulMin,mulMax);
               c = getRandomNum(2,10);
-              c = multipleFun(c,level)
+              c = multipleFun(c,multiple)
               d = b*c
             }
             console.log(99999999999);
@@ -329,7 +328,7 @@
           while(!d || d>max || d < minProduct) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
             d = b*c
           }
 
@@ -349,7 +348,7 @@
         //   while(!d || d>max || b<modMin) {
         //     b = getRandomNum(mulMin,mulMax);
         //     c = getRandomNum(2,10);
-        //     c = multipleFun(c,level)
+        //     c = multipleFun(c,multiple)
         //     d = b*c
         //   }
 
@@ -366,7 +365,7 @@
           while(!d || d>max || d < minProduct) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
             d = b*c
           }
   
@@ -382,7 +381,7 @@
           while(!d || d>max || d < minProduct) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level);
+            c = multipleFun(c,multiple);
             a = getRandomNum(2,10);
             d = b*c*a
           }
@@ -398,7 +397,7 @@
           while(!d || d>max) {
             b = getRandomNum(mulMin,mulMax);
             c = getRandomNum(2,10);
-            c = multipleFun(c,level)
+            c = multipleFun(c,multiple)
             d = b*c
           }
 
@@ -422,25 +421,37 @@
     let Arr = ['+','-','*','+-','++','--']
     let shifting = [10,100,1000]
     let m = getRandomNum(0,2)
-    var a,b,n,sum
-    a = getRandomNum(1,100)
+    var a,b,n,sum,max
+    
     sum = 0
     if(level == 1)  {
       n = getRandomNum(0,1)
+      a = getRandomNum(1,100)
+      max = 100
     }
 
     if(level == 2)  {
-      // n = getRandomNum(0,2)
-      n = 2
+      n = getRandomNum(0,2)
+      // n = 2
+      a = getRandomNum(1,250)
+      max = 250
     }
 
     if(level ==3) {
       n = getRandomNum(3,4)
+      a = getRandomNum(1,250)
+      max = 250
     }    
+
+    if(level == 4) {
+      n = getRandomNum(3,4)
+      a = getRandomNum(1,500)
+      max = 500
+    }
     
     switch(Arr[n]){
       case '+':{
-        b = getRandomNum(1,100);
+        b = getRandomNum(1,max);
         sum = a+b;
         return `${a/shifting[m]} + ${b/shifting[m]}=${sum/shifting[m]}`;
         break;
@@ -452,22 +463,22 @@
         break;
       }
       case '+-':{
-        b = getRandomNum(1,100-a);
+        b = getRandomNum(1,max-a);
         let c = getRandomNum(1,a+b);
         sum = a+b-c;
         return `${a/shifting[m]} + ${b/shifting[m]} - ${c/shifting[m]}=${sum/shifting[m]}`;
         break;
       }
       case '++':{
-        b = getRandomNum(1,100);
-        let c = getRandomNum(1,100);
+        b = getRandomNum(1,max);
+        let c = getRandomNum(1,max);
         sum = a+b+c;
         return `${a/shifting[m]} + ${b/shifting[m]} + ${c/shifting[m]}=${sum/shifting[m]}`;
         break;
       }
       case '--':{
         if(a == 1) {
-          b = getRandomNum(2,100);
+          b = getRandomNum(2,max);
         }
         b = getRandomNum(1,a-1);
         let c = getRandomNum(1,a-b);

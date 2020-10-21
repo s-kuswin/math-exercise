@@ -50,8 +50,6 @@ Page({
           stage = onePassGrade >= 2 ? 3 : onePassGrade >= 1 ? 2 : 1
         }
         [ topicList, resultList ] = oneRandomQuestion(stage)
-        console.log(topicList, resultList);
-        
         break;
       }
       case '1':{
@@ -152,8 +150,6 @@ Page({
 
   //更改标题头
   setTitle() {
-    console.log(totalTime,'totalTime');
-    
     let min = parseInt(totalTime/60)
     let sec = totalTime%60
     this.setData({
